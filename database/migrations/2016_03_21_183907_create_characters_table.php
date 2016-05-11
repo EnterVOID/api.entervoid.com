@@ -21,10 +21,10 @@ class CreateCharactersTable extends Migration
             $table->string('height')->nullable();
             $table->string('weight')->nullable();
             $table->text('bio');
-            $table->string('type');
-            $table->string('status');
-            $table->string('icon_id');
-            $table->string('design_sheet_id');
+            $table->integer('character_type_id')->index();
+            $table->integer('character_status_id')->index();
+            $table->integer('icon_id')->index();
+            $table->integer('design_sheet_id')->index();
             $table->integer('intro_id')->unsigned()->nullable()->index();
             $table->string('intro_id_legacy')->nullable();
             $table->timestamps();

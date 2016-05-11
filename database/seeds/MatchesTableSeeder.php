@@ -16,46 +16,31 @@ class CharactersTableSeeder extends Seeder
     public function run()
     {
         DB::transaction(function () {
-            $fighters = DB::connection('everything')->select('
+            $events = DB::connection('everything')->select('
                 SELECT
-                    f.id,
-                    f.name,
-                    f.sex,
-                    f.height,
-                    f.bio,
-                    f.type,
-                    f.status,
-                    f.born,
-                    CONCAT(i.eventID, "-", i.side) AS intro_id_legacy,
-                    f.image,
-                    f.winimage,
-                    f.loseimage,
-                    f.normimage
+                    eventID,
+                    title,
+                    type,
+                    length,
+                    pages,
+                    status,
+                    `end`,
+                    views,
+                    `last`
                 FROM
-                    fighter f
-                LEFT JOIN (
-                    SELECT
-                        en.eventID,
-                        en.side,
-                        en.fighterID
-                    FROM entry en
-                    JOIN event ev
-                        ON en.eventID = ev.eventID
-                        AND ev.title = "Intro Story"
-                    GROUP BY en.eventID, en.side
-                ) i ON i.fighterID = f.id
+                    event
             ');
 
-            foreach ($fighters as $fighter) {
+            foreach ($events as $event) {
                 // Save basic attributes
-                $character = Character::findOrNew($fighter['id']);
+                $match = Match::findOrNew($event['eventID']);
                 $character->id = $fighter['id'];
                 $character->name = htmlspecialchars(stripslashes($fighter['name']));
                 $character->gender = stripslashes($fighter['sex']);
                 $character->height = stripslashes($fighter['height']);
                 $character->bio = stripslashes($fighter['bio']);
-                $character->type = CharacterType::where('legacy_id', '=', $fighter['type'])->get();
-                $character->status = CharacterStatus::where('legacy_id', '=', $fighter['status'])->get();
+                $character->type = $fighter['type'];
+                $character->status = $fighter['status'];
                 $character->created_at = $fighter['born'];
                 $character->intro_id_legacy = $fighter['intro_id_legacy'];
 
