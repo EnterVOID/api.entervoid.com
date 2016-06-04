@@ -108,6 +108,11 @@ class Character extends Model
         return $this->hasOne('App\FileManaged', null, 'design_sheet_id');
     }
 
+    public function intro()
+    {
+        return $this->belongsTo('App\Comic');
+    }
+
     /**
      * Get all of the character's supplementary art.
      */

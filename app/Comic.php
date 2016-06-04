@@ -24,4 +24,14 @@ class Comic extends Model
     {
         return $this->belongsTo('App\Match');
     }
+
+    public function characters()
+    {
+        return $this->belongsToMany('App\Character');
+    }
+
+    public function creators()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }

@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Character;
+use App\CharacterStatus;
+use App\CharacterType;
 use App\FileManaged;
 
 class CharactersTableSeeder extends Seeder
@@ -54,10 +56,21 @@ class CharactersTableSeeder extends Seeder
                 $character->gender = stripslashes($fighter['sex']);
                 $character->height = stripslashes($fighter['height']);
                 $character->bio = stripslashes($fighter['bio']);
-                $character->type = CharacterType::where('legacy_id', '=', $fighter['type'])->get();
-                $character->status = CharacterStatus::where('legacy_id', '=', $fighter['status'])->get();
+                $character->type()->associate(CharacterType::where('legacy_id', '=', $fighter['type'])->get());
+                $character->status()->associate(CharacterStatus::where('legacy_id', '=', $fighter['status'])->get());
                 $character->created_at = $fighter['born'];
                 $character->intro_id_legacy = $fighter['intro_id_legacy'];
+
+                // Get creatpr(s) and create relations (users should already exist in database)
+                $members = DB::connection('everything')->select('
+                        SELECT user_id FROM creators
+                        WHERE creation_id = :character_id AND creation_type = "character"
+                    ',
+                    [':character_id' => $character->id]
+                );
+                foreach ($members as $member) {
+                    $character->creators()->attach($member['user_id']);
+                }
 
                 // We'll be copying character images manually since filenames
                 // won't change, but we need to create FileManaged objects and
