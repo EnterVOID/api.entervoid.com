@@ -1,3 +1,9 @@
 /vendor
 .env
 /config/database.php
+/.idea
+.DS_Store
+.phpstorm.meta.php
+_ide_helper.php
+*.sublime-*
+public/images/
