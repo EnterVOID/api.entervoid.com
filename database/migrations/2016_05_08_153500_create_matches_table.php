@@ -12,15 +12,15 @@ class CreateMatchesTable extends Migration
      */
     public function up()
     {
-        Schema::table('matches', function (Blueprint $table) {
+        Schema::create('matches', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('title');
-            $table->integer('match_type_id')->index();
+            $table->integer('type_id')->index();
             $table->integer('length');
             $table->integer('page_limit')->nullable();
             $table->timestamp('due_date');
-            $table->integer('match_status_id')->index();
+            $table->integer('status_id')->index();
             $table->timestamps();
             $table->softDeletes();
         });

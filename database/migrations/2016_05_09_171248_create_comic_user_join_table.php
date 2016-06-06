@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateComicsUserJoinTable extends Migration
+class CreateComicUserJoinTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,11 @@ class CreateComicsUserJoinTable extends Migration
      */
     public function up()
     {
-        Schema::table('comic_user', function (Blueprint $table) {
+        Schema::create('comic_user', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->integer('comic_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->primary(['character_id', 'user_id']);
+            $table->primary(['comic_id', 'user_id']);
         });
     }
 
@@ -27,8 +27,6 @@ class CreateComicsUserJoinTable extends Migration
      */
     public function down()
     {
-        Schema::table('comic_user', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('comic_user');
     }
 }

@@ -12,7 +12,7 @@ class CreateCharacterTypesTable extends Migration
      */
     public function up()
     {
-        Schema::table('character_types', function (Blueprint $table) {
+        Schema::create('character_types', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');

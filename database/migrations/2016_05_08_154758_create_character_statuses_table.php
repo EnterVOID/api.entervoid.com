@@ -12,7 +12,7 @@ class CreateCharacterStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::table('character_statuses', function (Blueprint $table) {
+        Schema::create('character_statuses', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');

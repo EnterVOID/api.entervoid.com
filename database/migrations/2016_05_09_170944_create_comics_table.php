@@ -12,7 +12,7 @@ class CreateComicsTable extends Migration
      */
     public function up()
     {
-        Schema::table('comics', function (Blueprint $table) {
+        Schema::create('comics', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('match_id')->index();

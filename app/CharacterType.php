@@ -12,12 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CharacterType extends Model
 {
+    public $timestamps = false;
+    
     /**
      * Get all of the owning "attach" models.
      */
     public function characters()
     {
-        return $this->hasMany('App\Character');
+        return $this->hasMany('App\Character', 'type_id');
     }
 
 }

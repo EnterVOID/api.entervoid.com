@@ -12,12 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MatchType extends Model
 {
+    public $timestamps = false;
+    
     /**
      * Get all of the owning "attach" models.
      */
     public function matches()
     {
-        return $this->hasMany('App\Match');
+        return $this->hasMany('App\Match', 'type_id');
     }
 
 }

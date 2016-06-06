@@ -12,14 +12,15 @@ class CreateChallengesTable extends Migration
      */
     public function up()
     {
-        Schema::table('challenges', function (Blueprint $table) {
+        Schema::create('challenges', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->integer('length');
             $table->integer('page_limit')->nullable();
             $table->text('message')->nullable();
-            $table->string('type');
+            $table->integer('type_id')->index();
+            $table->timestamps();
         });
     }
 

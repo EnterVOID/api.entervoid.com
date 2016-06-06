@@ -52,16 +52,20 @@ class CharactersTableSeeder extends Seeder
                 // Save basic attributes
                 $character = Character::findOrNew($fighter['id']);
                 $character->id = $fighter['id'];
+                $character->save();
                 $character->name = htmlspecialchars(stripslashes($fighter['name']));
                 $character->gender = stripslashes($fighter['sex']);
                 $character->height = stripslashes($fighter['height']);
                 $character->bio = stripslashes($fighter['bio']);
-                $character->type()->associate(CharacterType::where('legacy_id', '=', $fighter['type'])->get());
-                $character->status()->associate(CharacterStatus::where('legacy_id', '=', $fighter['status'])->get());
+                $characterType = CharacterType::where('legacy_id', '=', $fighter['type'])->get();
+                $character->type()->associate($characterType);
+                $characterStatus = CharacterStatus::where('legacy_id', '=', $fighter['status'])->get();
+                $character->status()->associate($characterStatus);
                 $character->created_at = $fighter['born'];
                 $character->intro_id_legacy = $fighter['intro_id_legacy'];
+                $character->save();
 
-                // Get creatpr(s) and create relations (users should already exist in database)
+                // Get creator(s) and create relations (users should already exist in database)
                 $members = DB::connection('everything')->select('
                         SELECT user_id FROM creators
                         WHERE creation_id = :character_id AND creation_type = "character"
@@ -69,7 +73,9 @@ class CharactersTableSeeder extends Seeder
                     [':character_id' => $character->id]
                 );
                 foreach ($members as $member) {
+                    if (!$member['user_id'] || $character->creators->contains($member['user_id'])) continue;
                     $character->creators()->attach($member['user_id']);
+                    $character->save();
                 }
 
                 // We'll be copying character images manually since filenames

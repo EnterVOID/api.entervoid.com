@@ -32,3 +32,9 @@ $app->get('character/{id}', [
   'as' => 'character_get_single',
   'uses' => 'CharacterController@get',
 ]);
+
+// Characters: get single character info
+$app->get('character/type/{legacy_id}', [
+    'as' => 'character_type_get_from_legacy',
+    'uses' => 'CharacterController@getTypeFromLegacy',
+]);

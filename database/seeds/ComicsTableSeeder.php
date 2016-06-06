@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 use App\Character;
 use App\Comic;
 
-class CharactersTableSeeder extends Seeder
+class ComicsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -40,9 +40,14 @@ class CharactersTableSeeder extends Seeder
                     $comic->published_at = $comic->completed_at = $end;
                 }
                 $comic->created_at = $end->subWeeks($entry['length']);
+                $comic->save();
                 $comic->match()->associate($entry['eventID']);
-                $comic->creators()->attach($entry['forum']);
-                $comic->characters()->attach($entry['fighterID']);
+                if ($entry['forum'] && !$comic->creators->contains($entry['forum'])) {
+                    $comic->creators()->attach($entry['forum']);
+                }
+                if ($entry['fighterID'] && !$comic->characters->contains($entry['fighterID'])) {
+                    $comic->characters()->attach($entry['fighterID']);
+                }
 
                 // Finally, save the Character
                 $comic->save();

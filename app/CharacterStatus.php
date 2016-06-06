@@ -12,12 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CharacterStatus extends Model
 {
+    public $timestamps = false;
+    
     /**
      * Get all of the owning "attach" models.
      */
     public function characters()
     {
-        return $this->hasMany('App\Character');
+        return $this->hasMany('App\Character', 'status_id');
     }
 
 }

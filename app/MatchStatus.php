@@ -12,12 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MatchStatus extends Model
 {
+    public $timestamps = false;
+    
     /**
      * Get all of the owning "attach" models.
      */
     public function matches()
     {
-        return $this->hasMany('App\Match');
+        return $this->hasMany('App\Match', 'status_id');
     }
 
 }
