@@ -17,24 +17,20 @@ $app->get('/', function () use ($app) {
 
 // Managed files: download
 $app->get('file/{id}', [
-  'as' => 'getfile',
   'uses' => 'FileManagedController@get',
 ]);
 
 // Managed files: upload
 $app->post('file/create', [
-  'as' => 'createfile',
   'uses' => 'FileManagedController@create',
 ]);
 
-// Characters: get single character info
-$app->get('character/{id}', [
-  'as' => 'character_get_single',
-  'uses' => 'CharacterController@get',
+// Characters: get character info for multiple characters
+$app->get('characters', [
+    'uses' => 'CharacterController@getMany',
 ]);
 
 // Characters: get single character info
-$app->get('character/type/{legacy_id}', [
-    'as' => 'character_type_get_from_legacy',
-    'uses' => 'CharacterController@getTypeFromLegacy',
+$app->get('characters/{id}[/{with}]', [
+  'uses' => 'CharacterController@get',
 ]);

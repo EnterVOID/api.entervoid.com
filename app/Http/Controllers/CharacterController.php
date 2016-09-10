@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Character;
-use App\CharacterType;
 use Illuminate\Http\Request;
 
 class CharacterController extends Controller
 {
-    public function get(Request $request, $id)
+    const MAX_PAGE_SIZE = 1500;
+
+    public function get($id, $with = null)
     {
-        return Character::find($id);
+        if ($with) {
+            return response(Character::with($with)->findOrFail($id));
+        }
+        return response(Character::findOrFail($id));
     }
 
-    public function getTypeFromLegacy(Request $request, $legacy_id)
+    public function getMany(Request $request)
     {
-        return CharacterType::where('legacy_id', '=', $legacy_id)->get();
+        $query = Character::query();
+        $this->order($request, $query);
+        return response($this->paginate($request, $query));
     }
 }

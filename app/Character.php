@@ -60,6 +60,12 @@ class Character extends Model
         'type', 'status',
     ];
 
+    protected $with = [
+        'type',
+        'status',
+        'icon',
+    ];
+
     /**
      * Get the character icon.
      */
