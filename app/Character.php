@@ -103,7 +103,7 @@ class Character extends Model
      */
     public function icon()
     {
-        return $this->hasOne('App\FileManaged', null, 'icon_id');
+        return $this->morphOne('App\FileManaged', null, 'icon_id');
     }
 
     /**
@@ -111,7 +111,7 @@ class Character extends Model
      */
     public function design_sheet()
     {
-        return $this->hasOne('App\FileManaged', null, 'design_sheet_id');
+        return $this->morphOne('App\FileManaged', null, 'design_sheet_id');
     }
 
     public function intro()
