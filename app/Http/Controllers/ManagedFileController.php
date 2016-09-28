@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\FileManaged;
+use App\ManagedFile;
 use Request;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Response;
 
-class FileManagedController extends Controller {
+class ManagedFileController extends Controller {
 
     public function create() {
         // Upload file, optionally using attacher to generate path dynamically
@@ -23,8 +23,8 @@ class FileManagedController extends Controller {
         $filename = $file->getFilename() . '.' . $file->getClientOriginalExtension();
         $destination = $path . $filename;
         Storage::disk('local')->put($destination, File::get($file));
-        // Add managed file to database using FileManaged model
-        $fileManaged = new FileManaged;
+        // Add managed file to database using ManagedFile model
+        $fileManaged = new ManagedFile;
         $fileManaged->mime = $file->getClientMimeType();
         $fileManaged->original_filename = $file->getClientOriginalName();
         $fileManaged->filename = $filename;
@@ -34,11 +34,10 @@ class FileManagedController extends Controller {
         $fileManaged->save();
 
         return $fileManaged;
-        
     }
 
     public function get($id){
-        $entry = FileManaged::find($id);
+        $entry = ManagedFile::find($id);
         $path = 'uploads/';
         if ($entry->attacher_id && $entry->attacher_type) {
             $path = $entry->attacher_type . '/' . $entry->attacher_id . '/';

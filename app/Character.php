@@ -25,9 +25,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Carbon\Carbon $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $creators
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Comic[] $comics
- * @property-read \App\FileManaged $icon
- * @property-read \App\FileManaged $design_sheet
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\FileManaged[] $supplementary_art
+ * @property-read \App\ManagedFile $icon
+ * @property-read \App\ManagedFile $design_sheet
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ManagedFile[] $supplementary_art
  * @method static \Illuminate\Database\Query\Builder|\App\Character whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Character whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Character whereGender($value)
@@ -57,7 +57,16 @@ class Character extends Model
      * @var array
      */
     protected $fillable = [
-        'type', 'status',
+        'name',
+        'gender',
+        'height',
+        'weight',
+        'bio',
+        'type_id',
+        'status_id',
+        'icon_id',
+        'design_sheet_id',
+        'intro_id',
     ];
 
     protected $with = [
@@ -100,18 +109,20 @@ class Character extends Model
 
     /**
      * Get the character icon.
+     * Fun Fact: This works opposite of how morphOne would normally work, because it uses
+     * characters.icon_id = files_managed.id instead of files_managed.attacher_id = characters.id
      */
     public function icon()
     {
-        return $this->morphOne('App\FileManaged', 'attacher', null, null, 'icon_id');
+        return $this->morphOne('App\ManagedFile', 'attacher', null, 'id', 'icon_id');
     }
 
     /**
      * Get the character icon.
      */
-    public function design_sheet()
+    public function designSheet()
     {
-        return $this->morphOne('App\FileManaged', 'attacher', null, null, 'design_sheet_id');
+        return $this->morphOne('App\ManagedFile', 'attacher', null, null, 'design_sheet_id');
     }
 
     public function intro()
@@ -122,8 +133,8 @@ class Character extends Model
     /**
      * Get all of the character's supplementary art.
      */
-    public function supplementary_art()
+    public function supplementaryArt()
     {
-        return $this->morphMany('App\FileManaged', 'attacher');
+        return $this->morphMany('App\ManagedFile', 'attacher');
     }
 }

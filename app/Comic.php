@@ -16,14 +16,11 @@ class Comic extends Model
     use SoftDeletes;
 
     protected $dates = ['created_at', 'updated_at', 'completed_at', 'published_at', 'deleted_at'];
-
-    /**
-     * Get the character icon.
-     */
-    public function match()
-    {
-        return $this->belongsTo('App\Match');
-    }
+    protected $with = ['match'];
+    protected $fillable = [
+        'match_id',
+        'title',
+    ];
 
     public function characters()
     {
@@ -33,5 +30,15 @@ class Comic extends Model
     public function creators()
     {
         return $this->belongsToMany('App\User');
+    }
+
+    public function match()
+    {
+        return $this->belongsTo('App\Match');
+    }
+
+    public function pages()
+    {
+        return $this->hasMany('App\ComicPage');
     }
 }

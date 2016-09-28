@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Character;
 use App\CharacterStatus;
 use App\CharacterType;
-use App\FileManaged;
+use App\ManagedFile;
 
 class CharactersTableSeeder extends Seeder
 {
@@ -57,12 +57,12 @@ class CharactersTableSeeder extends Seeder
                 $character->gender = stripslashes($fighter['sex']);
                 $character->height = stripslashes($fighter['height']);
                 $character->bio = stripslashes($fighter['bio']);
-                $characterType = CharacterType::where('legacy_id', '=', $fighter['type'])->get();
-                $character->type()->associate($characterType);
-                $characterStatus = CharacterStatus::where('legacy_id', '=', $fighter['status'])->get();
-                $character->status()->associate($characterStatus);
                 $character->created_at = $fighter['born'];
                 $character->intro_id_legacy = $fighter['intro_id_legacy'];
+                $characterType = CharacterType::where('legacy_id', $fighter['type'])->first();
+                $character->type()->associate($characterType);
+                $characterStatus = CharacterStatus::where('legacy_id', $fighter['status'])->first();
+                $character->status()->associate($characterStatus);
                 $character->save();
 
                 // Get creator(s) and create relations (users should already exist in database)
@@ -79,18 +79,18 @@ class CharactersTableSeeder extends Seeder
                 }
 
                 // We'll be copying character images manually since filenames
-                // won't change, but we need to create FileManaged objects and
+                // won't change, but we need to create ManagedFile objects and
                 // link their id's here:
-                $fighterImagesPath = app()->basePath('public/images/character/') . $character->id . '/';
+                $fighterImagesPath = app()->basePath('public/images/characters/') . $character->id . '/';
                 // Icon
-                $icon = self::pathToFileManaged($fighterImagesPath . stripslashes($fighter['image']), $character);
+                $icon = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['image']), $character);
                 $character->icon_id = $icon ? $icon->id : null;
                 // Design Sheet
-                $designSheet = self::pathToFileManaged($fighterImagesPath . stripslashes($fighter['normimage']), $character);
+                $designSheet = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['normimage']), $character);
                 $character->design_sheet_id = $designSheet ? $designSheet->id : null;
                 // Supplementary art (previously `winimage` and `loseimage`)
-                $win = self::pathToFileManaged($fighterImagesPath . stripslashes($fighter['winimage']), $character);
-                $lose = self::pathToFileManaged($fighterImagesPath . stripslashes($fighter['loseimage']), $character);
+                $win = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['winimage']), $character);
+                $lose = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['loseimage']), $character);
 
                 // Finally, save the Character
                 $character->save();
@@ -99,13 +99,13 @@ class CharactersTableSeeder extends Seeder
     }
 
     /**
-    * Helper function to conver existing path to UploadedFile object
+    * Helper function to convert existing path to UploadedFile object
     * @param     string $path
     * @param     bool $public default false
     * @return    object(Symfony\Component\HttpFoundation\File\UploadedFile)
     * @author    Alexandre Thebaldi
     */
-    public static function pathToFileManaged($path, $character)
+    public function pathToManagedFile($path, $character)
     {
         try {
             $name = File::name($path);
@@ -120,18 +120,20 @@ class CharactersTableSeeder extends Seeder
         }
         $filename = $uploadedFile->getFilename();
 
-        $fileManaged = FileManaged::firstOrNew([
+        $managedFile = ManagedFile::firstOrNew([
+            'path' => 'characters/' . $character->id . '/',
             'filename' => $filename,
-            'attacher_type' => 'character',
+            'attacher_type' => 'App\\Character',
             'attacher_id' => $character->id,
         ]);
-        $fileManaged->mime = $uploadedFile->getClientMimeType();
-        $fileManaged->original_filename = $uploadedFile->getClientOriginalName();
-        $fileManaged->filename = $filename;
-        $fileManaged->attacher_id = $character->id;
-        $fileManaged->attacher_type = 'character';
-        $fileManaged->save();
+        $managedFile->mime = $uploadedFile->getClientMimeType();
+        $managedFile->original_filename = $uploadedFile->getClientOriginalName();
+        $managedFile->path = 'characters/' . $character->id . '/';
+        $managedFile->filename = $filename;
+        $managedFile->attacher_id = $character->id;
+        $managedFile->attacher_type = 'App\\Character';
+        $managedFile->save();
 
-        return $fileManaged;
+        return $managedFile;
     }
 }

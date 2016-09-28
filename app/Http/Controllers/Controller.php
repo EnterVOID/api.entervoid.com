@@ -20,8 +20,7 @@ class Controller extends BaseController
      * @param \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder $query
      * @param array $orderData
      */
-    protected function order(Request $request, $query) {
-        $order = $request->input('order', ['name' => 'asc']);
+    protected function order($order, $query) {
         foreach($order as $fieldName => $dir) {
             $dir = $dir ? strtolower($dir) : 'asc';
 

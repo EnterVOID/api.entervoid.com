@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFilesManagedTable extends Migration
+class CreateManagedFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class CreateFilesManagedTable extends Migration
      */
     public function up()
     {
-        Schema::create('files_managed', function (Blueprint $table) {
+        Schema::create('managed_files', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('path');
             $table->string('filename');
             $table->string('mime');
             $table->string('original_filename');
-            $table->integer('attacher_id')->unsigned()->nullable()->index();
+            $table->unsignedInteger('attacher_id')->nullable()->index();
             $table->string('attacher_type')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -31,6 +32,6 @@ class CreateFilesManagedTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('files_managed');
+        Schema::dropIfExists('managed_files');
     }
 }
