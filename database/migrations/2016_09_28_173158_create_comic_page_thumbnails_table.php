@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMatchesTable extends Migration
+class CreateComicPageThumbnailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,11 @@ class CreateMatchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('matches', function (Blueprint $table) {
+        Schema::create('comic_page_thumbnails', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('title');
-            $table->integer('type_id')->index();
-            $table->integer('length');
-            $table->integer('page_limit')->nullable();
-            $table->timestamp('due_date')->nullable();
-            $table->integer('status_id')->index();
+            $table->unsignedInteger('page_id')->index();
+            $table->unsignedInteger('managed_file_id')->index();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +29,6 @@ class CreateMatchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('matches');
+        Schema::dropIfExists('comic_page_thumbnails');
     }
 }

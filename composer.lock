@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "37ee85464fa0ed27fe261197733c7be4",
-    "content-hash": "8367f10212ca637dd4030ecbba6388f7",
+    "hash": "894cd6fdf0e8b3e3ea1504afd51f0360",
+    "content-hash": "a08a098b28d8e4155aaf74ca93ca19fa",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -1895,6 +1895,48 @@
             "time": "2015-12-20 19:50:12"
         },
         {
+            "name": "palanik/lumen-cors",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/palanik/lumen-cors.git",
+                "reference": "39ecb83bf4bea8553a6a406f8ab6355fd0983a24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/palanik/lumen-cors/zipball/39ecb83bf4bea8553a6a406f8ab6355fd0983a24",
+                "reference": "39ecb83bf4bea8553a6a406f8ab6355fd0983a24",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "palanik\\lumen\\Middleware\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "palanik"
+                }
+            ],
+            "description": "Cross-origin resource sharing (CORS) middleware for Lumen micro-framework.",
+            "homepage": "https://github.com/palanik/lumen-cors",
+            "keywords": [
+                "cors",
+                "corslumen",
+                "cross-origin",
+                "laravel",
+                "lumen",
+                "lumencors",
+                "preflight"
+            ],
+            "time": "2016-06-07 15:28:08"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v1.4.1",
             "source": {
@@ -2028,6 +2070,53 @@
                 "psr-3"
             ],
             "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "rlacerda83/query-parser",
+            "version": "v1.0-beta",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rlacerda83/lumen-api-query-parser.git",
+                "reference": "23bbe43390ab6e3d19d660f8b3ca2d39de547027"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rlacerda83/lumen-api-query-parser/zipball/23bbe43390ab6e3d19d660f8b3ca2d39de547027",
+                "reference": "23bbe43390ab6e3d19d660f8b3ca2d39de547027",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "laravel/lumen-framework": "5.1.*",
+                "phpunit/phpunit": "~4.4",
+                "vlucas/phpdotenv": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "QueryParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Rodrigo Lacerda",
+                    "email": "r.lacerda83@gmail.com"
+                }
+            ],
+            "description": "Query parser for lumem",
+            "homepage": "http://github.com/rlacerda83/lumen-api-query-parser",
+            "keywords": [
+                "lumen",
+                "parser",
+                "query"
+            ],
+            "time": "2015-08-23 00:15:05"
         },
         {
             "name": "symfony/class-loader",
@@ -3733,7 +3822,10 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "rlacerda83/query-parser": 20,
+        "palanik/lumen-cors": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

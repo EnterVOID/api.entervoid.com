@@ -47,7 +47,7 @@ class MatchesTableSeeder extends Seeder
                     $match->created_at = $match->due_date->subWeeks($event['length']);
                 }
                 catch (InvalidArgumentException $e) {
-                    $match->due_date = $match->created_at = new Carbon('0000-00-00');
+                    $match->due_date = $match->created_at = null;
                 }
                 $match->type()->associate(MatchType::where('legacy_id', '=', $event['type'])->get());
                 $match->status()->associate(MatchStatus::where('legacy_id', '=', $event['status'])->get());

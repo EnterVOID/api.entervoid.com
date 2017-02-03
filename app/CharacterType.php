@@ -13,6 +13,11 @@ use Illuminate\Database\Eloquent\Model;
 class CharacterType extends Model
 {
     public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+        'legacy_id',
+    ];
     
     /**
      * Get all of the owning "attach" models.
