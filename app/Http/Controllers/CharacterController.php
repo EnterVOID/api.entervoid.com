@@ -9,35 +9,19 @@ use Illuminate\Http\Request;
 
 class CharacterController extends Controller
 {
-    const MAX_PAGE_SIZE = 1500;
+    protected $model = Character::class;
 
     public function get($id, $with = null)
     {
         if ($with === 'artwork') {
-            return response(Character::with([
+            $with = [
                 'icon',
                 'designSheet',
                 'supplementaryArt',
                 'intro',
-            ])->findOrFail($id));
+            ];
         }
-        if ($with) {
-            return response(Character::with($with)->findOrFail($id));
-        }
-        return response(Character::findOrFail($id));
-    }
-
-    public function create(Request $request)
-    {
-        return Character::create($request->json()->all());
-    }
-
-    public function getMany(Request $request)
-    {
-        $query = Character::query();
-        $order = $request->input('order', ['name' => 'asc']);
-        $this->order($order, $query);
-        return response($this->paginate($request, $query));
+        return parent::get($id, $with);
     }
 
     public function getType($id)

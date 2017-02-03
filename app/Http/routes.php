@@ -70,6 +70,11 @@ $app->get('characters/{id}[/{with}]', [
   'uses' => 'CharacterController@get',
 ]);
 
+// Characters: update single character info
+$app->put('characters/{id}', [
+    'uses' => 'CharacterController@update',
+]);
+
 // Comics: get comic info for multiple comics
 $app->get('comics', [
     'uses' => 'ComicController@getMany',

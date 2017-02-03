@@ -51,7 +51,7 @@ class UsersTableSeeder extends Seeder
                 $user->posts = $member['posts'];
                 $user->real_name = $member['real_name'];
                 $user->email_address = $member['email_address'];
-                $user->birthdate = new Carbon($member['birthdate']);
+                $user->birthdate = $member['birthdate'] === '0001-01-01' ? null : new Carbon($member['birthdate']);
                 $user->website_title = $member['website_title'];
                 $user->website_url = $member['website_url'];
                 $user->location = $member['location'];

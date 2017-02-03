@@ -16,6 +16,7 @@ class CreateComicPageThumbnailsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('page_id')->index();
+            $table->unsignedInteger('managed_file_id')->index();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateComicPagesTable extends Migration
+class CreateCharacterSupplementaryArtJoinTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,11 @@ class CreateComicPagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('comic_pages', function (Blueprint $table) {
+        Schema::create('character_supplementary_art', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
-            $table->unsignedInteger('comic_id')->index();
-            $table->unsignedSmallInteger('page_number');
-            $table->string('filename');
+            $table->unsignedInteger('character_id')->index();
             $table->unsignedInteger('managed_file_id')->index();
-            $table->timestamps();
-            $table->softDeletes();
+            $table->primary(['character_id', 'managed_file_id']);
         });
     }
 
@@ -31,6 +27,6 @@ class CreateComicPagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comic_pages');
+        Schema::dropIfExists('character_supplementary_art');
     }
 }

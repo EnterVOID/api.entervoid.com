@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -50,6 +51,7 @@ class CharactersTableSeeder extends Seeder
 
             foreach ($fighters as $fighter) {
                 // Save basic attributes
+                /** @var App\Character $character */
                 $character = Character::findOrNew($fighter['id']);
                 $character->id = $fighter['id'];
                 $character->save();
@@ -57,10 +59,12 @@ class CharactersTableSeeder extends Seeder
                 $character->gender = stripslashes($fighter['sex']);
                 $character->height = stripslashes($fighter['height']);
                 $character->bio = stripslashes($fighter['bio']);
-                $character->created_at = $fighter['born'];
+                $character->created_at = $fighter['born'] === '0000-00-00 00:00:00' ? null : new Carbon($fighter['born']);
                 $character->intro_id_legacy = $fighter['intro_id_legacy'];
+                /** @var App\CharacterType $characterType */
                 $characterType = CharacterType::where('legacy_id', $fighter['type'])->first();
                 $character->type()->associate($characterType);
+                /** @var App\CharacterStatus $characterStatus */
                 $characterStatus = CharacterStatus::where('legacy_id', $fighter['status'])->first();
                 $character->status()->associate($characterStatus);
                 $character->save();
@@ -84,13 +88,19 @@ class CharactersTableSeeder extends Seeder
                 $fighterImagesPath = app()->basePath('public/images/characters/') . $character->id . '/';
                 // Icon
                 $icon = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['image']), $character);
-                $character->icon_id = $icon ? $icon->id : null;
+                $character->icon()->associate($icon);
                 // Design Sheet
+                /** @var App\ManagedFile $designSheet */
                 $designSheet = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['normimage']), $character);
-                $character->design_sheet_id = $designSheet ? $designSheet->id : null;
+                $character->designSheet()->associate($designSheet);
                 // Supplementary art (previously `winimage` and `loseimage`)
+                /** @var App\ManagedFile $win */
                 $win = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['winimage']), $character);
+                /** @var App\ManagedFile $lose */
                 $lose = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['loseimage']), $character);
+                $character->supplementaryArt()->sync(filter(map([$win, $lose], function($art) {
+                    return $art->id ?? null;
+                })));
 
                 // Finally, save the Character
                 $character->save();
@@ -120,18 +130,15 @@ class CharactersTableSeeder extends Seeder
         }
         $filename = $uploadedFile->getFilename();
 
+        /** @var App\ManagedFile $managedFile */
         $managedFile = ManagedFile::firstOrNew([
             'path' => 'characters/' . $character->id . '/',
             'filename' => $filename,
-            'attacher_type' => 'App\\Character',
-            'attacher_id' => $character->id,
         ]);
         $managedFile->mime = $uploadedFile->getClientMimeType();
         $managedFile->original_filename = $uploadedFile->getClientOriginalName();
         $managedFile->path = 'characters/' . $character->id . '/';
         $managedFile->filename = $filename;
-        $managedFile->attacher_id = $character->id;
-        $managedFile->attacher_type = 'App\\Character';
         $managedFile->save();
 
         return $managedFile;

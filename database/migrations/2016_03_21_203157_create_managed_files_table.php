@@ -18,8 +18,6 @@ class CreateManagedFilesTable extends Migration
             $table->string('filename');
             $table->string('mime');
             $table->string('original_filename');
-            $table->unsignedInteger('attacher_id')->nullable()->index();
-            $table->string('attacher_type')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

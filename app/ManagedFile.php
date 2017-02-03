@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * App\ManagedFile
@@ -31,11 +34,33 @@ use Illuminate\Database\Eloquent\Model;
 class ManagedFile extends Model
 {
     /**
-     * Get all of the owning "attach" models.
+     * Save a new model and return the instance.
+     *
+     * @param UploadedFile $file
+     * @param null $path
+     * @return static
      */
-    public function attacher()
+    public static function createFromFile(UploadedFile $file, $path = null)
     {
-        return $this->morphTo();
+        $path = $path ?? 'uploads/';
+        $filename = $file->getFilename() . '.' . $file->getClientOriginalExtension();
+        $destination = $path . $filename;
+        Storage::disk('local')->put($destination, File::get($file));
+        // Add managed file to database using ManagedFile model
+        $model = new static;
+        $model->mime = $file->getClientMimeType();
+        $model->original_filename = $file->getClientOriginalName();
+        $model->filename = $filename;
+        $model->path = $path;
+
+        $model->save();
+
+        return $model;
+    }
+
+    public function getFile()
+    {
+        return Storage::disk('local')->get($this->path . $this->filename);
     }
 
 }

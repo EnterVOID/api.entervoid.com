@@ -38,6 +38,7 @@ class ComicsTableSeeder extends Seeder
 
             foreach ($entries as $entry) {
                 // Save basic attributes
+                /** @var App\Comic $comic */
                 $comic = Comic::firstOrNew(['legacy_id' => $entry['legacy_id']]);
                 $comic->legacy_id = $entry['legacy_id'];
                 if ($entry['end'] && $entry['end'] !== '0000-00-00') {
@@ -61,6 +62,7 @@ class ComicsTableSeeder extends Seeder
                 $comic->save();
 
                 if ($entry['title'] === 'Intro Story') {
+                    /** @var App\Character $character */
                     $character = Character::findOrNew($entry['fighterID']);
                     $character->intro()->associate($comic);
                     $character->save();
@@ -74,8 +76,13 @@ class ComicsTableSeeder extends Seeder
                     FROM image WHERE eventID = :eventID AND side = :side
                 ', [':eventID' => $entry['eventID'], ':side' => $entry['side']]);
                 $oldPath = app()->basePath('public/images/allComics/') . $comic->legacy_id . '/';
-                $newPath = app()->basePath('public/images/comics/') . $comic->id . '/';
+                try {
+                    $newPath = app()->basePath('public/images/comics/') . $comic->match_id . '/' . $comic->id . '/';
+                } catch (ErrorException $e) {
+                    dd($comic);
+                }
                 foreach ($pages as $page) {
+                    /** @var App\ComicPage $comicPage */
                     $comicPage = ComicPage::firstOrCreate([
                         'comic_id' => $comic->id,
                         'page_number' => $page['page_number'],
@@ -85,10 +92,12 @@ class ComicsTableSeeder extends Seeder
                     ]);
                     $comicPage->comic()->associate($comic);
                     $comicPage->save();
+                    /** @var App\ManagedFile $image */
                     $image = $this->pathToManagedFile($oldPath, $newPath, $comicPage);
                     if ($image) {
-                        $comicPage->managedFile()->save($image);
+                        $comicPage->managedFile()->associate($image);
                     }
+                    /** @var App\ComicPageThumbnail $comicPageThumbnail */
                     $comicPageThumbnail = ComicPageThumbnail::firstOrCreate([
                         'page_id' => $comicPage->id,
                         'created_at' => $comic->created_at,
@@ -96,9 +105,10 @@ class ComicsTableSeeder extends Seeder
                     ]);
                     $comicPageThumbnail->page()->associate($comicPage);
                     $comicPageThumbnail->save();
+                    /** @var App\ManagedFile $thumbnail */
                     $thumbnail = $this->thumbnailToManagedFile($oldPath, $newPath . 'thumbnails/', $comicPage);
                     if ($thumbnail) {
-                        $comicPageThumbnail->managedFile()->save($thumbnail);
+                        $comicPageThumbnail->managedFile()->associate($thumbnail);
                     }
                 }
             }
@@ -134,24 +144,23 @@ class ComicsTableSeeder extends Seeder
         $extension = File::extension($filepath);
         $originalName = $name . '.' . $extension;
         $mimeType = File::mimeType($filepath);
+        /** @var Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile */
         $uploadedFile = new UploadedFile($filepath, $originalName, $mimeType, $size, null, true);
         if ($move) {
             $uploadedFile->move($newPath);
         }
         $filename = $uploadedFile->getFilename();
 
+        $path = 'comics/' . $page->comic->match_id . '/' . $page->comic->id . '/';
+        /** @var App\ManagedFile $managedFile */
         $managedFile = ManagedFile::firstOrNew([
-            'path' => 'comics/' . $page->comic->id . '/',
+            'path' => $path,
             'filename' => $filename,
-            'attacher_type' => 'App\\ComicPage',
-            'attacher_id' => $page->id,
         ]);
         $managedFile->mime = $uploadedFile->getClientMimeType();
         $managedFile->original_filename = $uploadedFile->getClientOriginalName();
-        $managedFile->path = 'comics/' . $page->comic->id . '/';
+        $managedFile->path = $path;
         $managedFile->filename = $filename;
-        $managedFile->attacher_id = $page->id;
-        $managedFile->attacher_type = 'App\\ComicPage';
         $managedFile->save();
 
         return $managedFile;
@@ -202,18 +211,16 @@ class ComicsTableSeeder extends Seeder
         }
         $filename = $uploadedFile->getFilename();
 
+        $path = 'comics/' . $page->comic->match_id . '/' . $page->comic->id . '/thumbnails/';
+        /** @var App\ManagedFile $managedFile */
         $managedFile = ManagedFile::firstOrNew([
-            'path' => 'comics/' . $page->comic->id . '/thumbnails/',
+            'path' => $path,
             'filename' => $filename,
-            'attacher_type' => 'App\\ComicPageThumbnail',
-            'attacher_id' => $page->thumbnail->id,
         ]);
         $managedFile->mime = $uploadedFile->getClientMimeType();
         $managedFile->original_filename = $uploadedFile->getClientOriginalName();
-        $managedFile->path = 'comics/' . $page->comic->id . '/thumbnails/';
+        $managedFile->path = $path;
         $managedFile->filename = $filename;
-        $managedFile->attacher_id = $page->thumbnail->id;
-        $managedFile->attacher_type = 'App\\ComicPageThumbnail';
         $managedFile->save();
 
         return $managedFile;

@@ -13,11 +13,11 @@ class ComicPageThumbnail extends Model
 
     public function page()
     {
-        return $this->belongsTo('App\ComicPage', 'page_id');
+        return $this->belongsTo('App\ComicPage');
     }
 
     public function managedFile()
     {
-        return $this->morphOne('App\ManagedFile', 'attacher');
+        return $this->belongsTo('App\ManagedFile');
     }
 }
