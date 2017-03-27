@@ -2,6 +2,7 @@
 
 namespace App\Comics;
 
+use App\Community\Commentable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -35,6 +36,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Match extends Model
 {
+    use Commentable;
     use SoftDeletes;
 
     protected $dates = ['created_at', 'updated_at', 'due_date', 'deleted_at'];

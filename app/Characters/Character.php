@@ -2,6 +2,7 @@
 
 namespace App\Characters;
 
+use App\Community\Commentable;
 use App\ManagedFile;
 use App\User;
 use App\Comics\Comic;
@@ -57,6 +58,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Character extends Model
 {
+    use Commentable;
     use SoftDeletes;
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
