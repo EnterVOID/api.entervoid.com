@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Comics\Http\Controllers;
 
-use App\Character;
-use App\Comic;
+use App\Http\Controllers\Controller;
+use App\Characters\Character;
+use App\Comics\Comic;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 

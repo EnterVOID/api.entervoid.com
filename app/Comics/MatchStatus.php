@@ -5,21 +5,21 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\MatchType
+ * App\MatchStatus
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Match[] $matches
  * @mixin \Eloquent
  */
-class MatchType extends Model
+class MatchStatus extends Model
 {
     public $timestamps = false;
-    
+
     /**
      * Get all of the owning "attach" models.
      */
     public function matches()
     {
-        return $this->hasMany('App\Match', 'type_id');
+        return $this->hasMany('App\Match', 'status_id');
     }
 
 }

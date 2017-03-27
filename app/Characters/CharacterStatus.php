@@ -5,12 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\CharacterType
+ * App\CharacterStatus
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Character[] $characters
  * @mixin \Eloquent
  */
-class CharacterType extends Model
+class CharacterStatus extends Model
 {
     public $timestamps = false;
 
@@ -18,13 +18,13 @@ class CharacterType extends Model
         'name',
         'legacy_id',
     ];
-    
+
     /**
      * Get all of the owning "attach" models.
      */
     public function characters()
     {
-        return $this->hasMany('App\Character', 'type_id');
+        return $this->hasMany('App\Character', 'status_id');
     }
 
 }
