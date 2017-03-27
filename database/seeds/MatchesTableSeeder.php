@@ -2,9 +2,9 @@
 
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use App\Match;
-use App\MatchStatus;
-use App\MatchType;
+use App\Comics\Match;
+use App\Comics\MatchStatus;
+use App\Comics\MatchType;
 
 class MatchesTableSeeder extends Seeder
 {
@@ -33,6 +33,7 @@ class MatchesTableSeeder extends Seeder
 
             foreach ($events as $event) {
                 // Save basic attributes
+                /** @var Match $match */
                 $match = Match::findOrNew($event['eventID']);
                 $match->id = $event['eventID'];
                 $match->title = stripslashes($event['title']);

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\CharacterStatus;
+use App\Characters\CharacterStatus;
 
 class CharacterStatusesTableSeeder extends Seeder
 {

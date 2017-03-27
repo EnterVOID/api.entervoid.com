@@ -1,9 +1,9 @@
 <?php
 
-use App\Character;
-use App\Comic;
-use App\ComicPage;
-use App\ComicPageThumbnail;
+use App\Characters\Character;
+use App\Comics\Comic;
+use App\Comics\Page;
+use App\Comics\Thumbnail;
 use App\ManagedFile;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -38,7 +38,7 @@ class ComicsTableSeeder extends Seeder
 
             foreach ($entries as $entry) {
                 // Save basic attributes
-                /** @var App\Comic $comic */
+                /** @var App\Comics\Comic $comic */
                 $comic = Comic::firstOrNew(['legacy_id' => $entry['legacy_id']]);
                 $comic->legacy_id = $entry['legacy_id'];
                 if ($entry['end'] && $entry['end'] !== '0000-00-00') {
@@ -62,7 +62,7 @@ class ComicsTableSeeder extends Seeder
                 $comic->save();
 
                 if ($entry['title'] === 'Intro Story') {
-                    /** @var App\Character $character */
+                    /** @var App\Characters\Character $character */
                     $character = Character::findOrNew($entry['fighterID']);
                     $character->intro()->associate($comic);
                     $character->save();
@@ -82,8 +82,8 @@ class ComicsTableSeeder extends Seeder
                     dd($comic);
                 }
                 foreach ($pages as $page) {
-                    /** @var App\ComicPage $comicPage */
-                    $comicPage = ComicPage::firstOrCreate([
+                    /** @var App\Comics\Page $comicPage */
+                    $comicPage = Page::firstOrCreate([
                         'comic_id' => $comic->id,
                         'page_number' => $page['page_number'],
                         'filename' => $page['filename'],
@@ -97,8 +97,8 @@ class ComicsTableSeeder extends Seeder
                     if ($image) {
                         $comicPage->managedFile()->associate($image);
                     }
-                    /** @var App\ComicPageThumbnail $comicPageThumbnail */
-                    $comicPageThumbnail = ComicPageThumbnail::firstOrCreate([
+                    /** @var App\Comics\Thumbnail $comicPageThumbnail */
+                    $comicPageThumbnail = Thumbnail::firstOrCreate([
                         'page_id' => $comicPage->id,
                         'created_at' => $comic->created_at,
                         'updated_at' => $comic->updated_at,

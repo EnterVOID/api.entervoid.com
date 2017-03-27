@@ -4,9 +4,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Character;
-use App\CharacterStatus;
-use App\CharacterType;
+use App\Characters\Character;
+use App\Characters\CharacterStatus;
+use App\Characters\CharacterType;
 use App\ManagedFile;
 
 class CharactersTableSeeder extends Seeder
@@ -51,7 +51,7 @@ class CharactersTableSeeder extends Seeder
 
             foreach ($fighters as $fighter) {
                 // Save basic attributes
-                /** @var App\Character $character */
+                /** @var App\Characters\Character $character */
                 $character = Character::findOrNew($fighter['id']);
                 $character->id = $fighter['id'];
                 $character->save();
@@ -61,10 +61,10 @@ class CharactersTableSeeder extends Seeder
                 $character->bio = stripslashes($fighter['bio']);
                 $character->created_at = $fighter['born'] === '0000-00-00 00:00:00' ? null : new Carbon($fighter['born']);
                 $character->intro_id_legacy = $fighter['intro_id_legacy'];
-                /** @var App\CharacterType $characterType */
+                /** @var App\Characters\CharacterType $characterType */
                 $characterType = CharacterType::where('legacy_id', $fighter['type'])->first();
                 $character->type()->associate($characterType);
-                /** @var App\CharacterStatus $characterStatus */
+                /** @var App\Characters\CharacterStatus $characterStatus */
                 $characterStatus = CharacterStatus::where('legacy_id', $fighter['status'])->first();
                 $character->status()->associate($characterStatus);
                 $character->save();

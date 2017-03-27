@@ -43,6 +43,7 @@ class UsersTableSeeder extends Seeder
             foreach ($members as $member) {
                 $genders = ['1' => 'M', '2' => 'F', '0' => 'U'];
                 // Save basic attributes
+                /** @var User $user */
                 $user = User::findOrNew($member['id']);
                 $user->id = $member['id'];
                 $user->login = $member['login'];

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\MatchType;
+use App\Comics\MatchType;
 
 class MatchTypesTableSeeder extends Seeder
 {

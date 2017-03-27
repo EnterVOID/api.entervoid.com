@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\CharacterType;
+use App\Characters\CharacterType;
 
 class CharacterTypesTableSeeder extends Seeder
 {

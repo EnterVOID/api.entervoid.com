@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\MatchStatus;
+use App\Comics\MatchStatus;
 
 class MatchStatusesTableSeeder extends Seeder
 {
