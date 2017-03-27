@@ -82,6 +82,10 @@ class Controller extends BaseController
      */
     protected function order($order, $query)
     {
+        if (empty($order)) {
+            return;
+        }
+
         foreach($order as $fieldName => $dir) {
             $dir = $dir ? strtolower($dir) : 'asc';
 
