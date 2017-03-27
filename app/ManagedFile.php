@@ -30,6 +30,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @method static \Illuminate\Database\Query\Builder|\App\ManagedFile whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ManagedFile whereDeletedAt($value)
  * @mixin \Eloquent
+ * @property string $path
+ * @method static \Illuminate\Database\Query\Builder|\App\ManagedFile wherePath($value)
  */
 class ManagedFile extends Model
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Characters;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Character[] $characters
  * @mixin \Eloquent
+ * @property integer $id
+ * @property string $name
+ * @property string $legacy_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Characters\CharacterType whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Characters\CharacterType whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Characters\CharacterType whereLegacyId($value)
  */
 class CharacterType extends Model
 {
@@ -24,7 +30,7 @@ class CharacterType extends Model
      */
     public function characters()
     {
-        return $this->hasMany('App\Character', 'type_id');
+        return $this->hasMany('App\Characters\Character', 'type_id');
     }
 
 }

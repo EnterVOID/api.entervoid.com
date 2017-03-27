@@ -1,7 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Characters;
 
+use App\ManagedFile;
+use App\User;
+use App\Comics\Comic;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $height
  * @property string $weight
  * @property string $bio
- * @property \App\CharacterType $type
+ * @property \App\Type $type
  * @property \App\CharacterStatus $status
  * @property string $icon_id
  * @property string $design_sheet_id
@@ -44,6 +47,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Character whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Character whereDeletedAt($value)
  * @mixin \Eloquent
+ * @property integer $type_id
+ * @property integer $status_id
+ * @property-read \App\ManagedFile $designSheet
+ * @property-read \App\Comics\Comic $intro
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ManagedFile[] $supplementaryArt
+ * @method static \Illuminate\Database\Query\Builder|\App\Characters\Character whereTypeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Characters\Character whereStatusId($value)
  */
 class Character extends Model
 {
@@ -127,7 +137,7 @@ class Character extends Model
 
     public function intro()
     {
-        return $this->belongsTo('App\Comic');
+        return $this->belongsTo('App\Comics\Comic');
     }
 
     /**
