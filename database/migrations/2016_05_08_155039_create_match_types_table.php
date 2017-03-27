@@ -13,7 +13,6 @@ class CreateMatchTypesTable extends Migration
     public function up()
     {
         Schema::create('match_types', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
             $table->string('legacy_id');

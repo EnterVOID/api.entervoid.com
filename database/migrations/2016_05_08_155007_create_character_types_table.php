@@ -13,7 +13,6 @@ class CreateCharacterTypesTable extends Migration
     public function up()
     {
         Schema::create('character_types', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
             $table->string('legacy_id');

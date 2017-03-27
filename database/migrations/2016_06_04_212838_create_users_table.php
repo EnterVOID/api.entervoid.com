@@ -13,7 +13,6 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('login');
             $table->integer('posts');
@@ -33,6 +32,10 @@ class CreateUsersTable extends Migration
             $table->string('secret_answer')->nullable();
             $table->string('password_salt');
             $table->timestamps();
+
+            $table->foreign('avatar_id')
+                ->references('id')
+                ->on('managed_files');
         });
     }
 

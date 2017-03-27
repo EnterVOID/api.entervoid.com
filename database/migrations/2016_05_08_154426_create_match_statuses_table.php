@@ -13,7 +13,6 @@ class CreateMatchStatusesTable extends Migration
     public function up()
     {
         Schema::create('match_statuses', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
             $table->string('legacy_id');

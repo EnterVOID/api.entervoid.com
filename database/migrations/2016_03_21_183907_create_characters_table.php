@@ -14,7 +14,6 @@ class CreateCharactersTable extends Migration
     {
         Schema::create('characters', function(Blueprint $table)
         {
-            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
             $table->string('gender')->nullable();
@@ -29,6 +28,26 @@ class CreateCharactersTable extends Migration
             $table->string('intro_id_legacy')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('type_id')
+                ->references('id')
+                ->on('character_types');
+
+            $table->foreign('status_id')
+                ->references('id')
+                ->on('character_statuses');
+
+            $table->foreign('icon_id')
+                ->references('id')
+                ->on('managed_files');
+
+            $table->foreign('design_sheet_id')
+                ->references('id')
+                ->on('managed_files');
+
+            $table->foreign('intro_id')
+                ->references('id')
+                ->on('matches');
         });
     }
 

@@ -13,10 +13,19 @@ class CreateCharacterSupplementaryArtJoinTable extends Migration
     public function up()
     {
         Schema::create('character_supplementary_art', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->unsignedInteger('character_id')->index();
             $table->unsignedInteger('managed_file_id')->index();
+            $table->timestamps();
+            $table->softDeletes();
             $table->primary(['character_id', 'managed_file_id']);
+
+            $table->foreign('character_id')
+                ->references('id')
+                ->on('characters');
+
+            $table->foreign('managed_file_id')
+                ->references('id')
+                ->on('managed_files');
         });
     }
 

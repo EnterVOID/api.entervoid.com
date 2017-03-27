@@ -13,7 +13,6 @@ class CreateComicsTable extends Migration
     public function up()
     {
         Schema::create('comics', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('match_id')->index();
             $table->string('title');
@@ -22,6 +21,10 @@ class CreateComicsTable extends Migration
             $table->timestamp('completed_at')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->softDeletes();
+
+            $table->foreign('match_id')
+                ->references('id')
+                ->on('matches');
         });
     }
 

@@ -13,7 +13,6 @@ class CreateMatchesTable extends Migration
     public function up()
     {
         Schema::create('matches', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('title');
             $table->integer('type_id')->index();
@@ -23,6 +22,14 @@ class CreateMatchesTable extends Migration
             $table->integer('status_id')->index();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('type_id')
+                ->references('id')
+                ->on('match_types');
+
+            $table->foreign('status_id')
+                ->references('id')
+                ->on('match_statuses');
         });
     }
 

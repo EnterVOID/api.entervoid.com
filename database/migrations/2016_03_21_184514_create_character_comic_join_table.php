@@ -13,10 +13,17 @@ class CreateCharacterComicJoinTable extends Migration
     public function up()
     {
         Schema::create('character_comic', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->integer('comic_id')->unsigned()->index();
             $table->integer('character_id')->unsigned()->index();
             $table->primary(['comic_id', 'character_id']);
+
+            $table->foreign('comic_id')
+                ->references('id')
+                ->on('comics');
+
+            $table->foreign('character_id')
+                ->references('id')
+                ->on('characters');
         });
     }
 

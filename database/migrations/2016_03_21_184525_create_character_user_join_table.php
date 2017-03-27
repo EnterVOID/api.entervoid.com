@@ -13,10 +13,17 @@ class CreateCharacterUserJoinTable extends Migration
     public function up()
     {
         Schema::create('character_user', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->integer('character_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->primary(['character_id', 'user_id']);
+
+            $table->foreign('character_id')
+                ->references('id')
+                ->on('characters');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
         });
     }
 

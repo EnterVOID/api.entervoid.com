@@ -13,7 +13,6 @@ class CreateComicPagesTable extends Migration
     public function up()
     {
         Schema::create('comic_pages', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('comic_id')->index();
             $table->unsignedSmallInteger('page_number');
@@ -21,6 +20,14 @@ class CreateComicPagesTable extends Migration
             $table->unsignedInteger('managed_file_id')->index();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('comic')
+                ->references('id')
+                ->on('comics');
+
+            $table->foreign('managed_file_id')
+                ->references('id')
+                ->on('managed_files');
         });
     }
 
