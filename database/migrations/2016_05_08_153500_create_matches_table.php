@@ -15,6 +15,7 @@ class CreateMatchesTable extends Migration
         Schema::create('matches', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
+            $table->string('slug');
             $table->integer('type_id')->index();
             $table->integer('length');
             $table->integer('page_limit')->nullable();

@@ -4,9 +4,9 @@ namespace App\Characters;
 
 use App\Community\Commentable;
 use App\ManagedFile;
+use App\SluggableModel;
 use App\User;
 use App\Comics\Comic;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -56,7 +56,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Characters\Character whereTypeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Characters\Character whereStatusId($value)
  */
-class Character extends Model
+class Character extends SluggableModel
 {
     use Commentable;
     use SoftDeletes;
@@ -86,6 +86,8 @@ class Character extends Model
         'status',
         'icon',
     ];
+
+    protected $sluggableAttribute = 'name';
 
     /**
      * Get the character icon.

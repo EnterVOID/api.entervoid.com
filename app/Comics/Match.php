@@ -3,6 +3,7 @@
 namespace App\Comics;
 
 use App\Community\Commentable;
+use App\SluggableModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -34,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Comics\Match whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Comics\Match whereDeletedAt($value)
  */
-class Match extends Model
+class Match extends SluggableModel
 {
     use Commentable;
     use SoftDeletes;
@@ -49,6 +50,11 @@ class Match extends Model
     protected $fillable = [
         'type', 'status',
     ];
+    
+    public function getSluggableAttribute()
+    {
+        return $this->title ?? $this->getKey();
+    }
 
     /**
      * Get the character icon.

@@ -2,9 +2,15 @@
 
 namespace App\Community;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Community\Events\SluggableSaving;
+use App\SluggableModel;
 
-class Webpage extends Model
+class Webpage extends SluggableModel
 {
     use Commentable;
+
+    protected $events = [
+        'saving' => SluggableSaving::class,
+    ];
+    protected $sluggableAttribute = 'title';
 }
