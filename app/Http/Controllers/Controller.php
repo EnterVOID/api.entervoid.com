@@ -40,28 +40,29 @@ class Controller extends BaseController
 
     public function create(Request $request)
     {
-        $model = call_user_func([$this->model, 'create'], $request->input(snake_case($this->model)));
+        $data = $request->input(snake_case($this->model)) ?? $request->all();
+        $model = call_user_func([$this->model, 'create'], $data);
 
-        return $this->save($request, $model);
+        return $this->save($data, $model);
     }
 
     public function update(Request $request, $id)
     {
+        $data = $request->input(snake_case($this->model)) ?? $request->all();
         $model = call_user_func([$this->model, 'findOrFail'], $id);
 
-        return $this->save($request, $model);
+        return $this->save($data, $model);
     }
 
-    private function save(Request $request, Model $model)
+    private function save(array $data, Model $model)
     {
-        $data = $request->input(snake_case($this->model));
-
         if (method_exists($model, 'saveWithRelations')) {
             return response($model->saveWithRelations($data));
         }
 
         $model->fill($data);
-        return response($model->save());
+        $model->save();
+        return response($model->fresh());
     }
 
     /**

@@ -85,10 +85,8 @@ $app->singleton(
 $app->register(App\Characters\Providers\CharacterServiceProvider::class);
 $app->register(App\Comics\Providers\ComicServiceProvider::class);
 $app->register(App\Community\Providers\CommunityServiceProvider::class);
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+$app->register(Appzcoder\LumenRoutesList\RoutesCommandServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

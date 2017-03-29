@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * App\Match
  *
- * @property-read \App\MatchType $type
- * @property-read \App\MatchStatus $status
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Comic[] $comics
+ * @property-read \App\Comics\MatchType $type
+ * @property-read \App\Comics\MatchStatus $status
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Comics\Comic[] $comics
  * @mixin \Eloquent
  * @property integer $id
  * @property string $title

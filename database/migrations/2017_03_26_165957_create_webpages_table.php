@@ -19,7 +19,7 @@ class CreateWebpagesTable extends Migration
             $table->longText('body');
             $table->boolean('published');
             $table->unsignedInteger('created_by')->index();
-            $table->unsignedInteger('updated_by')->index();
+            $table->unsignedInteger('updated_by')->index()->nullable();
             $table->timestamps();
             $table->softDeletes();
 
