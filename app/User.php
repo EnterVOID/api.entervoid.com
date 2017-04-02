@@ -2,6 +2,10 @@
 
 namespace App;
 
+use App\Characters\Character;
+use App\Comics\Comic;
+use App\Comics\Match;
+use App\Comics\Vote;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -76,4 +80,29 @@ class User extends Model implements
     protected $hidden = [
         'password',
     ];
+
+    public function characters()
+    {
+        return $this->hasMany(Character::class);
+    }
+
+    public function comics()
+    {
+        return $this->hasMany(Comic::class);
+    }
+
+    public function matches()
+    {
+        return $this->hasManyThrough(Match::class, Comic::class);
+    }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    public function voteResults()
+    {
+        return $this->hasManyThrough(Vote::class, Comic::class);
+    }
 }

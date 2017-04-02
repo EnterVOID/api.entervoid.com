@@ -2,6 +2,7 @@
 
 namespace App\Characters;
 
+use App\Comics\Vote;
 use App\Community\Commentable;
 use App\ManagedFile;
 use App\SluggableModel;
@@ -150,6 +151,11 @@ class Character extends SluggableModel
     public function supplementaryArt()
     {
         return $this->belongsToMany('App\ManagedFile', 'character_supplementary_art');
+    }
+
+    public function votes()
+    {
+        return $this->hasManyThrough(Vote::class, Comic::class);
     }
 
     public function saveWithRelations($data = [])

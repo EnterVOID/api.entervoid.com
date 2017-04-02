@@ -62,4 +62,9 @@ class Comic extends Model
     {
         return $this->hasMany('App\Comics\Page');
     }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
 }

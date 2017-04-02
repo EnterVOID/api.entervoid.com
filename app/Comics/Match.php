@@ -79,4 +79,9 @@ class Match extends SluggableModel
     {
         return $this->belongsToMany('App\Comics\Comic');
     }
+
+    public function votes()
+    {
+        return $this->hasManyThrough(Vote::class, Comic::class);
+    }
 }
