@@ -27,7 +27,7 @@ class CreateCharactersTable extends Migration
             $table->unsignedInteger('design_sheet_id')->index()->nullable();
             $table->unsignedInteger('intro_id')->nullable()->index();
             $table->string('intro_id_legacy')->nullable();
-            $table->timestamps();
+            $table->nullableTimestamps();
             $table->softDeletes();
 
             $table->foreign('type_id')

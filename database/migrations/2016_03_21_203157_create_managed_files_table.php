@@ -17,7 +17,7 @@ class CreateManagedFilesTable extends Migration
             $table->string('filename');
             $table->string('mime');
             $table->string('original_filename');
-            $table->timestamps();
+            $table->nullableTimestamps();
             $table->softDeletes();
         });
     }

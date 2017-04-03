@@ -21,7 +21,7 @@ class CreateMatchesTable extends Migration
             $table->integer('page_limit')->nullable();
             $table->timestamp('due_date')->nullable();
             $table->integer('status_id')->index();
-            $table->timestamps();
+            $table->nullableTimestamps();
             $table->softDeletes();
 
             $table->foreign('type_id')

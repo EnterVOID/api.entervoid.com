@@ -17,7 +17,7 @@ class CreateComicsTable extends Migration
             $table->integer('match_id')->index();
             $table->string('title');
             $table->string('legacy_id')->nullable();
-            $table->timestamps();
+            $table->nullableTimestamps();
             $table->timestamp('completed_at')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->softDeletes();

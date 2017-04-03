@@ -20,7 +20,7 @@ class CreateVotesTable extends Migration
             $table->tinyInteger('quality');
             $table->tinyInteger('creativity');
             $table->tinyInteger('entertainment');
-            $table->timestamps();
+            $table->nullableTimestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')
@@ -39,6 +39,6 @@ class CreateVotesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('votes');
     }
 }

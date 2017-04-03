@@ -19,7 +19,7 @@ class CreateChallengesTable extends Migration
             $table->integer('page_limit')->nullable();
             $table->text('message')->nullable();
             $table->integer('type_id')->index();
-            $table->timestamps();
+            $table->nullableTimestamps();
 
             $table->foreign('type_id')
                 ->references('id')

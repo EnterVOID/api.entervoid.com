@@ -18,7 +18,7 @@ class CreateComicPagesTable extends Migration
             $table->unsignedSmallInteger('page_number');
             $table->string('filename');
             $table->unsignedInteger('managed_file_id')->index();
-            $table->timestamps();
+            $table->nullableTimestamps();
             $table->softDeletes();
 
             $table->foreign('comic')

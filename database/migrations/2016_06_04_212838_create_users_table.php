@@ -31,7 +31,7 @@ class CreateUsersTable extends Migration
             $table->string('secret_question')->nullable();
             $table->string('secret_answer')->nullable();
             $table->string('password_salt');
-            $table->timestamps();
+            $table->nullableTimestamps();
 
             $table->foreign('avatar_id')
                 ->references('id')

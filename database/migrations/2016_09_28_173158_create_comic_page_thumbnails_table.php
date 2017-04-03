@@ -16,7 +16,7 @@ class CreateComicPageThumbnailsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('page_id')->index();
             $table->unsignedInteger('managed_file_id')->index();
-            $table->timestamps();
+            $table->nullableTimestamps();
             $table->softDeletes();
 
             $table->foreign('page_id')

@@ -15,7 +15,7 @@ class CreateCharacterSupplementaryArtJoinTable extends Migration
         Schema::create('character_supplementary_art', function (Blueprint $table) {
             $table->unsignedInteger('character_id')->index();
             $table->unsignedInteger('managed_file_id')->index();
-            $table->timestamps();
+            $table->nullableTimestamps();
             $table->softDeletes();
             $table->primary(['character_id', 'managed_file_id']);
 
