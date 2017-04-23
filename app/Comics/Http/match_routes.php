@@ -6,32 +6,32 @@ $app->get('/', [
 
 // Characters: get character info for multiple characters
 $app->get('types/{id}', [
-    'uses' => 'MatchController@getType',
+    'uses' => 'TypeController@get',
 ]);
 
 // Characters: get character info for multiple characters
 $app->get('types', [
-    'uses' => 'MatchController@getTypes',
+    'uses' => 'TypeController@getMany',
 ]);
 
 // Managed files: upload
 $app->post('types/create', [
-    'uses' => 'MatchController@createType',
+    'uses' => 'TypeController@create',
 ]);
 
 // Characters: get character info for multiple characters
 $app->get('statuses/{id}', [
-    'uses' => 'MatchController@getStatus',
+    'uses' => 'StatusController@get',
 ]);
 
 // Characters: get character info for multiple characters
 $app->get('statuses', [
-    'uses' => 'MatchController@getStatuses',
+    'uses' => 'StatusController@getMany',
 ]);
 
 // Managed files: upload
 $app->post('statuses/create', [
-    'uses' => 'MatchController@createStatus',
+    'uses' => 'StatusController@create',
 ]);
 
 // Comics: get single comic info
