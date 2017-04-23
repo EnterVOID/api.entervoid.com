@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Characters\Http\Controllers;
+namespace App\Comics\Http\Controllers;
 
-use App\Characters\MatchType;
+use App\Comics\MatchType;
 use App\Http\Controllers\Controller;
 
 class TypeController extends Controller
