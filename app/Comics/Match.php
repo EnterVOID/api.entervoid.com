@@ -50,6 +50,12 @@ class Match extends SluggableModel
     protected $fillable = [
         'type', 'status',
     ];
+
+    protected $with = [
+        'type',
+        'status',
+        'comics',
+    ];
     
     public function getSluggableAttribute()
     {
