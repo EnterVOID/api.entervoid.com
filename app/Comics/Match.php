@@ -83,7 +83,7 @@ class Match extends SluggableModel
      */
     public function comics()
     {
-        return $this->belongsToMany('App\Comics\Comic');
+        return $this->hasMany('App\Comics\Comic');
     }
 
     public function votes()
