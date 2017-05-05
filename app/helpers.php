@@ -77,6 +77,12 @@ function first($array, $predicate = null)
     return null;
 }
 
+/**
+ * Cycles through array and returns an array with only the items that match $predicate
+ * @param  $array
+ * @param  callable $predicate ($item, $arrayKey, $array) => boolean
+ * @return array
+ */
 function filter($array, $predicate = null)
 {
     $result = [];
