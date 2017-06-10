@@ -52,20 +52,20 @@ class CharactersTableSeeder extends Seeder
             foreach ($fighters as $fighter) {
                 // Save basic attributes
                 /** @var App\Characters\Character $character */
-                $character = Character::findOrNew($fighter['id']);
-                $character->id = $fighter['id'];
+                $character = Character::findOrNew($fighter->id);
+                $character->id = $fighter->id;
                 $character->save();
-                $character->name = htmlspecialchars(stripslashes($fighter['name']));
-                $character->gender = stripslashes($fighter['sex']);
-                $character->height = stripslashes($fighter['height']);
-                $character->bio = stripslashes($fighter['bio']);
-                $character->created_at = $fighter['born'] === '0000-00-00 00:00:00' ? null : new Carbon($fighter['born']);
-                $character->intro_id_legacy = $fighter['intro_id_legacy'];
+                $character->name = htmlspecialchars(stripslashes($fighter->name));
+                $character->gender = stripslashes($fighter->sex);
+                $character->height = stripslashes($fighter->height);
+                $character->bio = stripslashes($fighter->bio);
+                $character->created_at = $fighter->born === '0000-00-00 00:00:00' ? null : new Carbon($fighter->born);
+                $character->intro_id_legacy = $fighter->intro_id_legacy;
                 /** @var App\Characters\CharacterType $characterType */
-                $characterType = CharacterType::where('legacy_id', $fighter['type'])->first();
+                $characterType = CharacterType::where('legacy_id', $fighter->type)->first();
                 $character->type()->associate($characterType);
                 /** @var App\Characters\CharacterStatus $characterStatus */
-                $characterStatus = CharacterStatus::where('legacy_id', $fighter['status'])->first();
+                $characterStatus = CharacterStatus::where('legacy_id', $fighter->status)->first();
                 $character->status()->associate($characterStatus);
                 $character->save();
 
@@ -77,8 +77,8 @@ class CharactersTableSeeder extends Seeder
                     [':character_id' => $character->id]
                 );
                 foreach ($members as $member) {
-                    if (!$member['user_id'] || $character->creators->contains($member['user_id'])) continue;
-                    $character->creators()->attach($member['user_id']);
+                    if (!$member->user_id || $character->creators->contains($member->user_id)) continue;
+                    $character->creators()->attach($member->user_id);
                     $character->save();
                 }
 
@@ -87,17 +87,17 @@ class CharactersTableSeeder extends Seeder
                 // link their id's here:
                 $fighterImagesPath = app()->basePath('public/images/characters/') . $character->id . '/';
                 // Icon
-                $icon = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['image']), $character);
+                $icon = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter->image), $character);
                 $character->icon()->associate($icon);
                 // Design Sheet
                 /** @var App\ManagedFile $designSheet */
-                $designSheet = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['normimage']), $character);
+                $designSheet = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter->normimage), $character);
                 $character->designSheet()->associate($designSheet);
                 // Supplementary art (previously `winimage` and `loseimage`)
                 /** @var App\ManagedFile $win */
-                $win = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['winimage']), $character);
+                $win = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter->winimage), $character);
                 /** @var App\ManagedFile $lose */
-                $lose = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter['loseimage']), $character);
+                $lose = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter->loseimage), $character);
                 $character->supplementaryArt()->sync(filter(map([$win, $lose], function($art) {
                     return $art->id ?? null;
                 })));

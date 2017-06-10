@@ -39,31 +39,32 @@ class ComicsTableSeeder extends Seeder
             foreach ($entries as $entry) {
                 // Save basic attributes
                 /** @var App\Comics\Comic $comic */
-                $comic = Comic::firstOrNew(['legacy_id' => $entry['legacy_id']]);
-                $comic->legacy_id = $entry['legacy_id'];
-                if ($entry['end'] && $entry['end'] !== '0000-00-00') {
-                    $end = new Carbon($entry['end']);
-                    if (in_array($entry['status'], ['N', 'V'])) {
+                $comic = Comic::firstOrNew(['legacy_id' => $entry->legacy_id]);
+                $comic->legacy_id = $entry->legacy_id;
+                if ($entry->end && $entry->end !== '0000-00-00') {
+                    $end = new Carbon($entry->end);
+                    if (in_array($entry->status, ['N', 'V'])) {
                         $end = $end->subWeek();
                         $comic->published_at = $comic->completed_at = $end;
                     }
-                    $comic->created_at = $end->subWeeks($entry['length']);
+                    $comic->created_at = $end->subWeeks($entry->length);
                 }
                 $comic->save();
-                $comic->match()->associate($entry['eventID']);
-                if ($entry['forum'] && !$comic->creators->contains($entry['forum'])) {
-                    $comic->creators()->attach($entry['forum']);
+                $comic->match()->associate($entry->eventID);
+                $comic->save();
+                if ($entry->forum && !$comic->creators->contains($entry->forum)) {
+                    $comic->creators()->attach($entry->forum);
                 }
-                if ($entry['fighterID'] && !$comic->characters->contains($entry['fighterID'])) {
-                    $comic->characters()->attach($entry['fighterID']);
+                if ($entry->fighterID && !$comic->characters->contains($entry->fighterID)) {
+                    $comic->characters()->attach($entry->fighterID);
                 }
 
                 // Finally, save the Comic
                 $comic->save();
 
-                if ($entry['title'] === 'Intro Story') {
+                if ($entry->title === 'Intro Story') {
                     /** @var App\Characters\Character $character */
-                    $character = Character::findOrNew($entry['fighterID']);
+                    $character = Character::findOrNew($entry->fighterID);
                     $character->intro()->associate($comic);
                     $character->save();
                 }
@@ -74,7 +75,7 @@ class ComicsTableSeeder extends Seeder
                 $pages = DB::connection('everything')->select('
                     SELECT imageID AS id, fileName AS filename, PageNum AS page_number
                     FROM image WHERE eventID = :eventID AND side = :side
-                ', [':eventID' => $entry['eventID'], ':side' => $entry['side']]);
+                ', [':eventID' => $entry->eventID, ':side' => $entry->side]);
                 $oldPath = app()->basePath('public/images/allComics/') . $comic->legacy_id . '/';
                 try {
                     $newPath = app()->basePath('public/images/comics/') . $comic->match_id . '/' . $comic->id . '/';

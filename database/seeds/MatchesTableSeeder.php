@@ -34,24 +34,24 @@ class MatchesTableSeeder extends Seeder
             foreach ($events as $event) {
                 // Save basic attributes
                 /** @var Match $match */
-                $match = Match::findOrNew($event['eventID']);
-                $match->id = $event['eventID'];
-                $match->title = stripslashes($event['title']);
-                $match->length = $event['length'] ?: 0;
-                $match->page_limit = $event['pages'];
+                $match = Match::findOrNew($event->eventID);
+                $match->id = $event->eventID;
+                $match->title = stripslashes($event->title);
+                $match->length = $event->length ?: 0;
+                $match->page_limit = $event->pages;
                 try {
-                    $end = new Carbon($event['end']);
+                    $end = new Carbon($event->end);
                     $match->due_date = $end;
-                    if (in_array($event['status'], ['V', 'N', 'DN'])) {
+                    if (in_array($event->status, ['V', 'N', 'DN'])) {
                         $match->due_date = $end->subWeek();
                     }
-                    $match->created_at = $match->due_date->subWeeks($event['length']);
+                    $match->created_at = $match->due_date->subWeeks($event->length);
                 }
                 catch (InvalidArgumentException $e) {
                     $match->due_date = $match->created_at = null;
                 }
-                $match->type()->associate(MatchType::where('legacy_id', '=', $event['type'])->get());
-                $match->status()->associate(MatchStatus::where('legacy_id', '=', $event['status'])->get());
+                $match->type()->associate(MatchType::where('legacy_id', '=', $event->type)->get());
+                $match->status()->associate(MatchStatus::where('legacy_id', '=', $event->status)->get());
 
                 // Finally, save the Character
                 $match->save();
