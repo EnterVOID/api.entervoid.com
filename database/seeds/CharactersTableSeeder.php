@@ -77,10 +77,10 @@ class CharactersTableSeeder extends Seeder
                     [':character_id' => $character->id]
                 );
                 foreach ($members as $member) {
-                    if (!$member->user_id || $character->creators->contains($member->user_id)) continue;
-                    $character->creators()->attach($member->user_id);
-                    $character->save();
+                    if (!$member->user_id) continue;
+                    $character->creators()->syncWithoutDetaching($member->user_id);
                 }
+                $character->save();
 
                 // We'll be copying character images manually since filenames
                 // won't change, but we need to create ManagedFile objects and
