@@ -76,10 +76,10 @@ class CharactersTableSeeder extends Seeder
                     ',
                     [':character_id' => $character->id]
                 );
-                foreach ($members as $member) {
-                    if (!$member->user_id) continue;
-                    $character->creators()->syncWithoutDetaching($member->user_id);
-                }
+                $userIds = filter(map($members, function($member) {
+                    return $member->user_id ?? null;
+                }));
+                $character->creators()->syncWithoutDetaching($userIds);
                 $character->save();
 
                 // We'll be copying character images manually since filenames
