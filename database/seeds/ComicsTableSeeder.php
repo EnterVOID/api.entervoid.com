@@ -86,8 +86,8 @@ class ComicsTableSeeder extends Seeder
                     /** @var App\Comics\Page $comicPage */
                     $comicPage = Page::firstOrCreate([
                         'comic_id' => $comic->id,
-                        'page_number' => $page['page_number'],
-                        'filename' => $page['filename'],
+                        'page_number' => $page->page_number,
+                        'filename' => $page->filename,
                         'created_at' => $comic->created_at,
                         'updated_at' => $comic->updated_at,
                     ]);
