@@ -19,6 +19,7 @@ class ComicsTableSeeder extends Seeder
      */
     public function run()
     {
+        ini_set('memory_limit', '256M');
         DB::transaction(function () {
             $entries = DB::connection('everything')->select('
                 SELECT
