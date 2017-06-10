@@ -67,6 +67,7 @@ class ComicsTableSeeder extends Seeder
                     $character = Character::findOrNew($entry->fighterID);
                     $character->intro()->associate($comic);
                     $character->save();
+                    unset($character);
                 }
 
                 // Save comic pages
@@ -111,7 +112,15 @@ class ComicsTableSeeder extends Seeder
                     if ($thumbnail) {
                         $comicPageThumbnail->managedFile()->associate($thumbnail);
                     }
+                    unset($page);
+                    unset($comicPage);
+                    unset($image);
+                    unset($comicPageThumbnail);
+                    unset($thumbnail);
                 }
+                unset($pages);
+                unset($comic);
+                unset($entry);
             }
         });
     }
