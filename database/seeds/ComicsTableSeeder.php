@@ -21,7 +21,8 @@ class ComicsTableSeeder extends Seeder
     {
         ini_set('memory_limit', '256M');
         DB::transaction(function () {
-            $entries = DB::connection('everything')->select('
+			DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+			$entries = DB::connection('everything')->select('
                 SELECT
                     CONCAT(n.eventID, "-", n.side) AS legacy_id,
                     n.side,
@@ -50,7 +51,6 @@ class ComicsTableSeeder extends Seeder
                     }
                     $comic->created_at = $end->subWeeks($entry->length);
                 }
-                $comic->save();
                 $comic->match()->associate($entry->eventID);
                 $comic->save();
                 if ($entry->forum && !$comic->creators->contains($entry->forum)) {
@@ -86,7 +86,7 @@ class ComicsTableSeeder extends Seeder
                 }
                 foreach ($pages as $page) {
                     /** @var App\Comics\Page $comicPage */
-                    $comicPage = Page::firstOrCreate([
+                    $comicPage = Page::firstOrNew([
                         'comic_id' => $comic->id,
                         'page_number' => $page->page_number,
                         'filename' => $page->filename,
@@ -94,25 +94,25 @@ class ComicsTableSeeder extends Seeder
                         'updated_at' => $comic->updated_at,
                     ]);
                     $comicPage->comic()->associate($comic);
-                    $comicPage->save();
                     /** @var App\ManagedFile $image */
                     $image = $this->pathToManagedFile($oldPath, $newPath, $comicPage);
                     if ($image) {
                         $comicPage->managedFile()->associate($image);
                     }
+                    $comicPage->save();
                     /** @var App\Comics\Thumbnail $comicPageThumbnail */
-                    $comicPageThumbnail = Thumbnail::firstOrCreate([
+                    $comicPageThumbnail = Thumbnail::firstOrNew([
                         'page_id' => $comicPage->id,
                         'created_at' => $comic->created_at,
                         'updated_at' => $comic->updated_at,
                     ]);
                     $comicPageThumbnail->page()->associate($comicPage);
-                    $comicPageThumbnail->save();
                     /** @var App\ManagedFile $thumbnail */
                     $thumbnail = $this->thumbnailToManagedFile($oldPath, $newPath . 'thumbnails/', $comicPage);
                     if ($thumbnail) {
                         $comicPageThumbnail->managedFile()->associate($thumbnail);
                     }
+                    $comicPageThumbnail->save();
                     unset($page);
                     unset($comicPage);
                     unset($image);

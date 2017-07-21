@@ -19,6 +19,8 @@ class CharactersTableSeeder extends Seeder
     public function run()
     {
         DB::transaction(function () {
+        	// Disable foreign key checks because some characters are missing their users
+			DB::statement('SET FOREIGN_KEY_CHECKS = 0');
             $fighters = DB::connection('everything')->select('
                 SELECT
                     f.id,
@@ -54,7 +56,7 @@ class CharactersTableSeeder extends Seeder
                 /** @var App\Characters\Character $character */
                 $character = Character::findOrNew($fighter->id);
                 $character->id = $fighter->id;
-                $character->save();
+//                $character->save();
                 $character->name = htmlspecialchars(stripslashes($fighter->name));
                 $character->gender = stripslashes($fighter->sex);
                 $character->height = stripslashes($fighter->height);

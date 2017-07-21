@@ -37,11 +37,11 @@ class UsersTableSeeder extends Seeder
                 FROM
                     smf_members
                 WHERE
-                    is_activated = 1
+                    is_activated IN (1, 2, 11)
             ');
 
             foreach ($members as $member) {
-                $genders = ['1' => 'M', '2' => 'F', '0' => 'U'];
+                $genders = ['1' => 'M', '2' => 'F', '3' => 'O', '0' => 'U'];
                 // Save basic attributes
                 /** @var User $user */
                 $user = User::findOrNew($member->id);

@@ -29,6 +29,8 @@ class MatchesTableSeeder extends Seeder
                     `last`
                 FROM
                     `event`
+				WHERE
+                    type <> "" AND `status` <> ""
             ');
 
             foreach ($events as $event) {
@@ -50,8 +52,10 @@ class MatchesTableSeeder extends Seeder
                 catch (InvalidArgumentException $e) {
                     $match->due_date = $match->created_at = null;
                 }
-                $match->type()->associate(MatchType::where('legacy_id', '=', $event->type)->get());
-                $match->status()->associate(MatchStatus::where('legacy_id', '=', $event->status)->get());
+                $type = MatchType::where('legacy_id', '=', $event->type)->first();
+                $match->type()->associate($type->id);
+                $status = MatchStatus::where('legacy_id', '=', $event->status)->first();
+                $match->status()->associate($status->id);
 
                 // Finally, save the Character
                 $match->save();
