@@ -37,7 +37,6 @@ class Comic extends Model
     use SoftDeletes;
 
     protected $dates = ['created_at', 'updated_at', 'completed_at', 'published_at', 'deleted_at'];
-    protected $with = ['match', 'characters', 'creators'];
     protected $fillable = [
         'match_id',
         'title',

@@ -16,7 +16,6 @@ class Thumbnail extends Model
 {
     use SoftDeletes;
 
-    protected $with = ['managedFile'];
     protected $table = 'comic_page_thumbnails';
 
     public function page()

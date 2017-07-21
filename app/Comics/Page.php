@@ -17,7 +17,6 @@ class Page extends Model
 {
     use SoftDeletes;
 
-    protected $with = ['managedFile'];
     protected $table = 'comic_pages';
 
     public function comic()
