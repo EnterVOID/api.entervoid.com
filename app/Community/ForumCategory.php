@@ -5,17 +5,12 @@ namespace App\Community;
 
 use App\SluggableModel;
 
-class Forum extends SluggableModel
+class ForumCategory extends SluggableModel
 {
     protected $sluggableAttribute = 'name';
 
-    public function category()
+    public function forums()
     {
-        return $this->belongsTo(ForumCategory::class);
-    }
-
-    public function topics()
-    {
-        return $this->hasMany(ForumTopic::class);
+        return $this->hasMany(Forum::class);
     }
 }

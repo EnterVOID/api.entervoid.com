@@ -15,9 +15,4 @@ class ForumTopic extends SluggableModel
     {
         return $this->belongsTo(Forum::class);
     }
-
-    public function topics()
-    {
-        return $this->hasMany(ForumTopic::class);
-    }
 }
