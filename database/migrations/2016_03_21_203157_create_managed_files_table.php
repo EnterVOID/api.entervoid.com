@@ -13,6 +13,7 @@ class CreateManagedFilesTable extends Migration
     public function up()
     {
         Schema::create('managed_files', function (Blueprint $table) {
+			$table->increments('id');
             $table->string('path');
             $table->string('filename');
             $table->string('mime');

@@ -21,12 +21,20 @@ class CreateForumsTables extends Migration
         });
         Schema::create('forums', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('parent_id')->index();
-            $table->string('parent_type', 40);
+            $table->unsignedInteger('category_id')->index();
+            $table->unsignedInteger('parent_forum_id')->index();
             $table->string('name', 40);
             $table->text('description');
             $table->unsignedTinyInteger('order');
             $table->nullableTimestamps();
+
+			$table->foreign('category_id')
+				->references('id')
+				->on('forum_categories');
+
+			$table->foreign('parent_forum_id')
+				->references('id')
+				->on('forums');
         });
         Schema::create('forum_topics', function (Blueprint $table) {
             $table->increments('id');
