@@ -89,8 +89,8 @@ class CreateCharactersTables extends Migration
     public function down()
     {
 		Schema::dropIfExists('character_supplementary_art');
+		Schema::dropIfExists('characters');
 		Schema::dropIfExists('character_statuses');
 		Schema::dropIfExists('character_types');
-		Schema::dropIfExists('characters');
     }
 }

@@ -58,8 +58,8 @@ class CreateForumsTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('forum_categories');
+        Schema::dropIfExists('forum_topics');
         Schema::dropIfExists('forums');
-        Schema::dropIfExists('forum_posts');
+        Schema::dropIfExists('forum_categories');
     }
 }
