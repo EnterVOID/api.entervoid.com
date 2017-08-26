@@ -87,19 +87,19 @@ class CharactersTableSeeder extends Seeder
                 // We'll be copying character images manually since filenames
                 // won't change, but we need to create ManagedFile objects and
                 // link their id's here:
-                $fighterImagesPath = app()->basePath('public/images/characters/') . $character->id . '/';
+                $fighterImagesPath = app()->basePath('storage/public/characters/') . $character->id . '/';
                 // Icon
-                $icon = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter->image), $character);
+                $icon = $this->pathToManagedFile($fighterImagesPath . urldecode(stripslashes($fighter->image)), $character);
                 $character->icon()->associate($icon);
                 // Design Sheet
                 /** @var App\ManagedFile $designSheet */
-                $designSheet = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter->normimage), $character);
+                $designSheet = $this->pathToManagedFile($fighterImagesPath . urldecode(stripslashes($fighter->normimage)), $character);
                 $character->designSheet()->associate($designSheet);
                 // Supplementary art (previously `winimage` and `loseimage`)
                 /** @var App\ManagedFile $win */
-                $win = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter->winimage), $character);
+                $win = $this->pathToManagedFile($fighterImagesPath . urldecode(stripslashes($fighter->winimage)), $character);
                 /** @var App\ManagedFile $lose */
-                $lose = $this->pathToManagedFile($fighterImagesPath . stripslashes($fighter->loseimage), $character);
+                $lose = $this->pathToManagedFile($fighterImagesPath . urldecode(stripslashes($fighter->loseimage)), $character);
                 $character->supplementaryArt()->sync(filter(map([$win, $lose], function($art) {
                     return $art->id ?? null;
                 })));

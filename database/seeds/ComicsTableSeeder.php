@@ -78,9 +78,9 @@ class ComicsTableSeeder extends Seeder
                     SELECT imageID AS id, fileName AS filename, PageNum AS page_number
                     FROM image WHERE eventID = :eventID AND side = :side
                 ', [':eventID' => $entry->eventID, ':side' => $entry->side]);
-                $oldPath = app()->basePath('public/images/allComics/') . $comic->legacy_id . '/';
+                $oldPath = app()->basePath('storage/public/allComics/') . $comic->legacy_id . '/';
                 try {
-                    $newPath = app()->basePath('public/images/comics/') . $comic->match_id . '/' . $comic->id . '/';
+                    $newPath = app()->basePath('storage/public/comics/') . $comic->match_id . '/' . $comic->id . '/';
                 } catch (ErrorException $e) {
                     dd($comic);
                 }
@@ -89,7 +89,7 @@ class ComicsTableSeeder extends Seeder
                     $comicPage = Page::firstOrNew([
                         'comic_id' => $comic->id,
                         'page_number' => $page->page_number,
-                        'filename' => $page->filename,
+                        'filename' => urldecode(stripslashes($page->filename)),
                         'created_at' => $comic->created_at,
                         'updated_at' => $comic->updated_at,
                     ]);
