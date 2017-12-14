@@ -107,9 +107,9 @@ class Character extends SluggableModel
     }
 
     /**
-     * The users ("creators") attached to this character.
+     * The users attached to this character.
      */
-    public function creators()
+    public function users()
     {
         return $this->belongsToMany(User::class);
     }
@@ -172,9 +172,9 @@ class Character extends SluggableModel
             $this->status()->associate(CharacterStatus::findOrFail($status_id));
         }
 
-        // Creators (User)
-        if (array_key_exists('creators', $data)) {
-            $this->creators()->sync(map($data['creators'], function($creator) {
+        // User
+        if (array_key_exists('users', $data)) {
+            $this->users()->sync(map($data['users'], function($creator) {
                 $id = null;
                 if (is_numeric($creator)) {
                     $id = $creator;

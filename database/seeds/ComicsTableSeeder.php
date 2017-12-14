@@ -53,7 +53,7 @@ class ComicsTableSeeder extends Seeder
                 }
                 $comic->match()->associate($entry->eventID);
                 $comic->save();
-                if ($entry->forum && !$comic->creators->contains($entry->forum)) {
+                if ($entry->forum && !$comic->users->contains($entry->forum)) {
                     $comic->users()->attach($entry->forum);
                 }
                 if ($entry->fighterID && !$comic->characters->contains($entry->fighterID)) {
