@@ -13,7 +13,9 @@
         "rlacerda83/query-parser": "1.0.x@dev",
         "palanik/lumen-cors": "dev-master",
         "league/flysystem": "^1.0",
-        "appzcoder/lumen-routes-list": "^1.0"
+        "appzcoder/lumen-routes-list": "^1.0",
+        "league/flysystem-aws-s3-v3": "~1.0",
+        "vluzrmos/tinker": "^1.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
