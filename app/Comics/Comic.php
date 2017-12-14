@@ -47,7 +47,7 @@ class Comic extends Model
         return $this->belongsToMany('App\Characters\Character');
     }
 
-    public function creators()
+    public function users()
     {
         return $this->belongsToMany('App\User');
     }

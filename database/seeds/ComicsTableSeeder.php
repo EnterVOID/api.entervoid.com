@@ -54,7 +54,7 @@ class ComicsTableSeeder extends Seeder
                 $comic->match()->associate($entry->eventID);
                 $comic->save();
                 if ($entry->forum && !$comic->creators->contains($entry->forum)) {
-                    $comic->creators()->attach($entry->forum);
+                    $comic->users()->attach($entry->forum);
                 }
                 if ($entry->fighterID && !$comic->characters->contains($entry->fighterID)) {
                     $comic->characters()->attach($entry->fighterID);
@@ -111,8 +111,8 @@ class ComicsTableSeeder extends Seeder
                     $thumbnail = $this->thumbnailToManagedFile($oldPath, $newPath . 'thumbnails/', $comicPage);
                     if ($thumbnail) {
                         $comicPageThumbnail->managedFile()->associate($thumbnail);
+						$comicPageThumbnail->save();
                     }
-                    $comicPageThumbnail->save();
                     unset($page);
                     unset($comicPage);
                     unset($image);
@@ -135,6 +135,21 @@ class ComicsTableSeeder extends Seeder
      */
     public function pathToManagedFile($oldPath, $newPath, $page)
     {
+		/** @var App\ManagedFile $managedFile */
+		$managedFile = ManagedFile::firstOrNew([
+			'path' => 'comics/' . $page->comic->match_id . '/' . $page->comic_id,
+			'filename' => $page->filename,
+			'original_filename' => $page->filename,
+			'mime' => '',
+		]);
+		try {
+			$managedFile->mime = mime_content_type($newPath . '/' . $page->filename);
+		} catch (Exception $e) {
+			// Do nothing; we don't know the real mime type
+		}
+		$managedFile->save();
+		return $managedFile;
+
         $filepath = null;
         $size = null;
         $move = false;
@@ -147,7 +162,8 @@ class ComicsTableSeeder extends Seeder
                 $size = File::size($filepath);
                 $move = true;
             } catch (Exception $e) {
-                // Image doesn't exist; don't create managed file entry
+				Log::info('File missing at ' . $filepath . ' for match id ' . $page->comic->match->id);
+				// Image doesn't exist; don't create managed file entry
                 return null;
             }
         }
@@ -207,6 +223,7 @@ class ComicsTableSeeder extends Seeder
                         $size = File::size($path);
                         $move = true;
                     } catch (Exception $e) {
+                    	// No thumbnail; that's okay, we'll just use the default! :D
                         return null;
                     }
                 }

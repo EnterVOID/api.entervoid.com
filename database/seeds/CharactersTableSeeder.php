@@ -119,7 +119,24 @@ class CharactersTableSeeder extends Seeder
     */
     public function pathToManagedFile($path, $character)
     {
-        try {
+		if (strrpos($path, '/') === strlen($path - 1)) return null;
+
+		/** @var App\ManagedFile $managedFile */
+		$managedFile = ManagedFile::firstOrNew([
+			'path' => 'characters/' . $character->id . '/',
+			'filename' => basename($path),
+			'original_filename' => basename($path),
+			'mime' => '',
+		]);
+		try {
+			$managedFile->mime = mime_content_type($path);
+		} catch (Exception $e) {
+			// Do nothing; we don't know the true mime type
+		}
+		$managedFile->save();
+		return $managedFile;
+
+		try {
             $name = File::name($path);
             $extension = File::extension($path);
             $originalName = $name . '.' . $extension;
@@ -127,6 +144,7 @@ class CharactersTableSeeder extends Seeder
             $size = File::size($path);
             $uploadedFile = new UploadedFile($path, $originalName, $mimeType, $size, null, true);
         } catch (Exception $e) {
+        	Log::info('File missing at ' . $path . ' for character id ' . $character->id);
             // No image or image doesn't exist; don't create managed file entry
             return null;
         }
