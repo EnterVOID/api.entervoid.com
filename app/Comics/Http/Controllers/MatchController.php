@@ -4,6 +4,7 @@ namespace App\Comics\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Comics\Match;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 
 class MatchController extends Controller
@@ -27,22 +28,44 @@ class MatchController extends Controller
 
 	public function home(Request $request)
 	{
-		return response(
-			Match::with([
+		$voting = Match::with([
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
 			])
-			->join('match_statuses', function ($join) {
+			->join('match_statuses', function (JoinClause $join) {
 				$join->on('match_statuses.id', '=', 'matches.status_id')
-				->where('match_statuses.name', [
-					'Drawing',
-					'Voting',
-					'Complete',
-				]);
+					->where('match_statuses.name', 'Voting');
 			})
-			->groupBy(['status_id'])
 			->orderBy('due_date', 'desc')
 			->get()
-		);
+		;
+		$drawing = Match::with([
+				'comics.pages.managedFile',
+				'comics.pages.thumbnail.managedFile',
+			])
+			->join('match_statuses', function (JoinClause $join) {
+				$join->on('match_statuses.id', '=', 'matches.status_id')
+					->where('match_statuses.name', 'Drawing');
+			})
+			->orderBy('due_date', 'desc')
+			->get()
+		;
+		$complete = Match::with([
+				'comics.pages.managedFile',
+				'comics.pages.thumbnail.managedFile',
+			])
+			->join('match_statuses', function (JoinClause $join) {
+				$join->on('match_statuses.id', '=', 'matches.status_id')
+					->where('match_statuses.name', 'Complete');
+			})
+			->orderBy('due_date', 'desc')
+			->take(10)
+			->get()
+		;
+		return response([
+			'Voting' => $voting,
+			'Drawing' => $drawing,
+			'Complete' => $complete,
+		]);
 	}
 }
