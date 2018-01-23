@@ -41,7 +41,7 @@ class MatchController extends Controller
 				]);
 			})
 			->groupBy(['status_id'])
-			->orderBy(['due_date'])
+			->orderBy('due_date', 'desc')
 			->get()
 		);
 	}
