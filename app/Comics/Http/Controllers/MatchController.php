@@ -24,4 +24,16 @@ class MatchController extends Controller
 
 		return response(Match::with($with)->findOrFail($id));
 	}
+
+	public function home(Request $request)
+	{
+		return response(
+			Match::with([
+				'comics.pages.managedFile',
+				'comics.pages.thumbnail.managedFile',
+			])
+			->groupBy(['status_id'])
+			->get()
+		);
+	}
 }

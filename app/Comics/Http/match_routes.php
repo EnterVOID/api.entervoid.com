@@ -4,6 +4,11 @@ $app->get('/', [
     'uses' => 'MatchController@getMany',
 ]);
 
+// Comics: standard home page
+$app->get('home', [
+	'uses' => 'MatchController@home',
+]);
+
 // Characters: get character info for multiple characters
 $app->get('types/{id}', [
     'uses' => 'TypeController@get',
