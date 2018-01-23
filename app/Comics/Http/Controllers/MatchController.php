@@ -32,7 +32,16 @@ class MatchController extends Controller
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
 			])
+			->join('match_statuses', function ($join) {
+				$join->on('match_statuses.id', '=', 'matches.status_id')
+				->where('match_statuses.name', [
+					'Drawing',
+					'Voting',
+					'Complete',
+				]);
+			})
 			->groupBy(['status_id'])
+			->orderBy(['due_date'])
 			->get()
 		);
 	}

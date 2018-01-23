@@ -8,7 +8,7 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    const MAX_PAGE_SIZE = 1500;
+    const MAX_PAGE_SIZE = 50;
 
     /** @var Model */
     protected $model;
