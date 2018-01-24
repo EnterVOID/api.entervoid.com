@@ -20,6 +20,8 @@ class CreateManagedFilesTable extends Migration
             $table->string('original_filename');
             $table->nullableTimestamps();
             $table->softDeletes();
+
+			$table->unique(['path', 'filename']);
         });
     }
 

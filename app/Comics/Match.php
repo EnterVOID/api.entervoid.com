@@ -56,7 +56,7 @@ class Match extends SluggableModel
         'status',
         'comics',
     ];
-    
+
     public function getSluggableAttribute()
     {
         return $this->title ?? $this->getKey();
@@ -85,6 +85,11 @@ class Match extends SluggableModel
     {
         return $this->hasMany('App\Comics\Comic');
     }
+
+    public function playlistItem()
+	{
+		return $this->morphOne(PlaylistItem::class, 'playlisted');
+	}
 
     public function votes()
     {

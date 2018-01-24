@@ -48,3 +48,15 @@ $app->get('{id}[/{with}]', [
 $app->put('{id}', [
     'uses' => 'CharacterController@update',
 ]);
+
+$app->get('prizes', [
+	'uses' => 'PrizeController@getMany',
+]);
+
+$app->get('prizes/{id}', [
+	'uses' => 'PrizeController@get',
+]);
+
+$app->post('prizes/create', [
+	'uses' => 'PrizeController@create',
+]);

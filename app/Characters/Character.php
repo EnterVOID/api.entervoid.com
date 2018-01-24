@@ -158,6 +158,11 @@ class Character extends SluggableModel
         return $this->hasManyThrough(Vote::class, Comic::class);
     }
 
+	public function hitlist()
+	{
+		return $this->belongsToMany(User::class, 'hitlist');
+	}
+
     public function saveWithRelations($data = [])
     {
         $this->fill($data);

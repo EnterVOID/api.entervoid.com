@@ -81,6 +81,11 @@ class User extends Model implements
         'password',
     ];
 
+	public function achievements()
+	{
+		return $this->hasMany(Achievement::class);
+	}
+
     public function characters()
     {
         return $this->hasMany(Character::class);
@@ -105,4 +110,9 @@ class User extends Model implements
     {
         return $this->hasManyThrough(Vote::class, Comic::class);
     }
+
+    public function hitlist()
+	{
+		return $this->belongsToMany(Character::class, 'hitlist');
+	}
 }

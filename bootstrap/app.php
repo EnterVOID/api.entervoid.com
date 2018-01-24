@@ -87,6 +87,7 @@ $app->register(App\Comics\Providers\ComicServiceProvider::class);
 $app->register(App\Community\Providers\CommunityServiceProvider::class);
 $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
 $app->register(Appzcoder\LumenRoutesList\RoutesCommandServiceProvider::class);
+$app->register(Vluzrmos\Tinker\TinkerServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

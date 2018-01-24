@@ -28,12 +28,12 @@ trait Commentable
      */
     public function attachComment(Comment $comment, Comment $parentComment = null)
     {
-        if ($this->comments_allowed === false) {
+        if ($this->comments_allowed === false || !$this->comments()) {
             throw new \LogicException('Cannot attach comment to node: commenting not allowed on this object.');
         }
         if ($parentComment) {
             $comment->parentComment()->associate($parentComment);
         }
-        $this->comments()->save($comment);
+		$this->comments()->save($comment);
     }
 }

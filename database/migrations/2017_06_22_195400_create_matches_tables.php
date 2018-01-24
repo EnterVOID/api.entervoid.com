@@ -34,6 +34,8 @@ class CreateMatchesTables extends Migration
 			$table->integer('page_limit')->nullable();
 			$table->timestamp('due_date')->nullable();
 			$table->unsignedInteger('status_id')->index();
+			$table->integer('view_count');
+			$table->ipAddress('last_viewed_ip');
 			$table->nullableTimestamps();
 			$table->softDeletes();
 

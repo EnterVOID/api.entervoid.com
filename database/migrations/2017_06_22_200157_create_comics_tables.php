@@ -44,6 +44,8 @@ class CreateComicsTables extends Migration
 			$table->foreign('managed_file_id')
 				->references('id')
 				->on('managed_files');
+
+			$table->unique(['comic_id', 'filename']);
 		});
 
 		Schema::create('comic_page_thumbnails', function (Blueprint $table) {

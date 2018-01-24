@@ -20,15 +20,20 @@ class CreateVotesTable extends Migration
             $table->tinyInteger('quality');
             $table->tinyInteger('creativity');
             $table->tinyInteger('entertainment');
+            $table->ipAddress('ip');
+            $table->boolean('warning_issued');
             $table->nullableTimestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
+
             $table->foreign('comic_id')
                 ->references('id')
                 ->on('comics');
+
+            $table->unique(['user_id', 'comic_id']);
         });
     }
 
