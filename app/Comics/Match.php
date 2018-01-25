@@ -2,8 +2,10 @@
 
 namespace App\Comics;
 
+use App\Characters\Character;
 use App\Community\Commentable;
 use App\SluggableModel;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -95,4 +97,14 @@ class Match extends SluggableModel
     {
         return $this->hasManyThrough(Vote::class, Comic::class);
     }
+
+	public function characters()
+	{
+		return $this->hasManyThrough(Character::class, Comic::class);
+	}
+
+	public function users()
+	{
+		return $this->hasManyThrough(User::class, Comic::class);
+	}
 }

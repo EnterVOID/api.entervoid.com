@@ -31,6 +31,8 @@ class MatchController extends Controller
 		$voting = Match::with([
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
+				'characters.icon',
+				'users',
 			])
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Voting');
@@ -38,27 +40,37 @@ class MatchController extends Controller
 			->with(['votes' => function($query) use ($voter_id) {
 				$query->where('user_id', $voter_id);
 			}])
+			->whereRaw('due_date <= CURDATE()')
 			->orderBy('due_date', 'desc')
+			->orderBy('id')
 			->get()
 		;
 		$drawing = Match::with([
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
+				'characters.icon',
+				'users',
 			])
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Drawing');
 			})
-			->orderBy('due_date', 'desc')
+			->whereRaw('due_date <= CURDATE()')
+			->orderBy('due_date')
+			->orderBy('id')
 			->get()
 		;
 		$complete = Match::with([
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
+				'characters.icon',
+				'users',
 			])
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Complete');
 			})
+			->whereRaw('due_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)')
 			->orderBy('due_date', 'desc')
+			->orderBy('id', 'desc')
 			->take(10)
 			->get()
 		;
