@@ -31,8 +31,8 @@ class MatchController extends Controller
 		$voting = Match::with([
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
-				'characters.icon',
-				'users',
+				'comics.characters.icon',
+				'comics.users',
 			])
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Voting');
@@ -48,8 +48,8 @@ class MatchController extends Controller
 		$drawing = Match::with([
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
-				'characters.icon',
-				'users',
+				'comics.characters.icon',
+				'comics.users',
 			])
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Drawing');
@@ -62,8 +62,8 @@ class MatchController extends Controller
 		$complete = Match::with([
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
-				'characters.icon',
-				'users',
+				'comics.characters.icon',
+				'comics.users',
 			])
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Complete');

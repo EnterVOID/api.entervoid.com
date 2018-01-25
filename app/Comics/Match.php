@@ -97,14 +97,4 @@ class Match extends SluggableModel
     {
         return $this->hasManyThrough(Vote::class, Comic::class);
     }
-
-	public function characters()
-	{
-		return $this->hasManyThrough(Character::class, Comic::class);
-	}
-
-	public function users()
-	{
-		return $this->hasManyThrough(User::class, Comic::class);
-	}
 }
