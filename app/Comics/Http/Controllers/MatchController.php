@@ -36,12 +36,24 @@ class MatchController extends Controller
 				'comics.users',
 			])
 			->withCount('comments')
-			->whereHas('status', function ($query) {
-				$query->where('name', 'Voting');
-			})
 			->with(['votes' => function($query) use ($voter_id) {
 				$query->where('user_id', $voter_id);
 			}])
+			->with(['comics' => function($query) {
+				$query->leftJoin('votes', 'votes.comic_id', 'comics.id')
+					->selectRaw('
+						comics.*,
+						SUM(votes.quality) AS quality,
+						SUM(votes.creativity) AS creativity,
+						SUM(votes.entertainment) AS entertainment
+					')
+					->whereNull('votes.deleted_at')
+					->groupBy('comics.id')
+				;
+			}])
+			->whereHas('status', function ($query) {
+				$query->where('name', 'Voting');
+			})
 			->whereRaw('due_date > CURDATE()')
 			->orderBy('due_date', 'desc')
 			->orderBy('id')
@@ -56,6 +68,18 @@ class MatchController extends Controller
 				'comics.users',
 			])
 			->withCount('comments')
+			->with(['comics' => function($query) {
+				$query->leftJoin('votes', 'votes.comic_id', 'comics.id')
+					->selectRaw('
+						comics.*,
+						SUM(votes.quality) AS quality,
+						SUM(votes.creativity) AS creativity,
+						SUM(votes.entertainment) AS entertainment
+					')
+					->whereNull('votes.deleted_at')
+					->groupBy('comics.id')
+				;
+			}])
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Drawing');
 			})
@@ -71,6 +95,18 @@ class MatchController extends Controller
 				'comics.users',
 			])
 			->withCount('comments')
+			->with(['comics' => function($query) {
+				$query->leftJoin('votes', 'votes.comic_id', 'comics.id')
+					->selectRaw('
+						comics.*,
+						SUM(votes.quality) AS quality,
+						SUM(votes.creativity) AS creativity,
+						SUM(votes.entertainment) AS entertainment
+					')
+					->whereNull('votes.deleted_at')
+					->groupBy('comics.id')
+				;
+			}])
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Complete');
 			})
