@@ -28,6 +28,7 @@ class MatchController extends Controller
 	public function home(Request $request)
 	{
 		$voter_id = $request->input('voter_id');
+		// \DB::enableQueryLog();
 		$voting = Match::with([
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
@@ -40,11 +41,13 @@ class MatchController extends Controller
 			->with(['votes' => function($query) use ($voter_id) {
 				$query->where('user_id', $voter_id);
 			}])
-			->whereRaw('due_date <= CURDATE()')
+			->whereRaw('due_date > CURDATE()')
 			->orderBy('due_date', 'desc')
 			->orderBy('id')
 			->get()
 		;
+		// var_dump(\DB::getQueryLog());
+		// die();
 		$drawing = Match::with([
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
@@ -54,7 +57,7 @@ class MatchController extends Controller
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Drawing');
 			})
-			->whereRaw('due_date <= CURDATE()')
+			->whereRaw('due_date > CURDATE()')
 			->orderBy('due_date')
 			->orderBy('id')
 			->get()
