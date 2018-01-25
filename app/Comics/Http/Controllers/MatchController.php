@@ -36,7 +36,7 @@ class MatchController extends Controller
 				'comics.users',
 			])
 			->withCount('comments')
-			->with(['votes' => function($query) use ($voter_id) {
+			->withCount(['votes' => function($query) use ($voter_id) {
 				$query->where('user_id', $voter_id);
 			}])
 			->with(['comics' => function($query) {
