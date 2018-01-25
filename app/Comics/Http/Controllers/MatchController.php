@@ -35,6 +35,7 @@ class MatchController extends Controller
 				'comics.characters.icon',
 				'comics.users',
 			])
+			->withCount('comments')
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Voting');
 			})
@@ -54,6 +55,7 @@ class MatchController extends Controller
 				'comics.characters.icon',
 				'comics.users',
 			])
+			->withCount('comments')
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Drawing');
 			})
@@ -68,6 +70,7 @@ class MatchController extends Controller
 				'comics.characters.icon',
 				'comics.users',
 			])
+			->withCount('comments')
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Complete');
 			})
