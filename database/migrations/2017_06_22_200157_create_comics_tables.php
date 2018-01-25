@@ -18,6 +18,9 @@ class CreateComicsTables extends Migration
 			$table->unsignedInteger('match_id')->index();
 			$table->string('title');
 			$table->string('legacy_id')->nullable();
+			$table->boolean('accepted');
+			$table->unsignedTinyInteger('winner')->nullable();
+			$table->unsignedTinyInteger('extended');
 			$table->nullableTimestamps();
 			$table->timestamp('completed_at')->nullable();
 			$table->timestamp('published_at')->nullable();
