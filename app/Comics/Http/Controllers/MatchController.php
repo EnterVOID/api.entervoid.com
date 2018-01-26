@@ -49,6 +49,7 @@ class MatchController extends Controller
 						SUM(votes.entertainment) AS entertainment
 					')
 					->whereNull('votes.deleted_at')
+					->where('votes.warning_issued', 0)
 					->groupBy('comics.id')
 				;
 			}])

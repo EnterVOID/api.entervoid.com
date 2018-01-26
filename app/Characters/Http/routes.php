@@ -39,16 +39,6 @@ $app->post('statuses/create', [
     'uses' => 'StatusController@create',
 ]);
 
-// Characters: get single character info
-$app->get('{id}[/{with}]', [
-  'uses' => 'CharacterController@get',
-]);
-
-// Characters: update single character info
-$app->put('{id}', [
-    'uses' => 'CharacterController@update',
-]);
-
 $app->get('prizes', [
 	'uses' => 'PrizeController@getMany',
 ]);
@@ -59,4 +49,14 @@ $app->get('prizes/{id}', [
 
 $app->post('prizes/create', [
 	'uses' => 'PrizeController@create',
+]);
+
+// Characters: get single character info
+$app->get('{id}[/{with}]', [
+  'uses' => 'CharacterController@get',
+]);
+
+// Characters: update single character info
+$app->put('{id}', [
+    'uses' => 'CharacterController@update',
 ]);
