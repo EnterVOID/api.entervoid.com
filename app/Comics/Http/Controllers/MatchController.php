@@ -54,7 +54,7 @@ class MatchController extends Controller
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Voting');
 			})
-			->whereRaw('due_date > CURDATE()')
+			->whereRaw('due_date >= CURDATE()')
 			->orderBy('due_date', 'desc')
 			->orderBy('id')
 			->get()
@@ -83,7 +83,7 @@ class MatchController extends Controller
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Drawing');
 			})
-			->whereRaw('due_date > CURDATE()')
+			->whereRaw('due_date >= CURDATE()')
 			->orderBy('due_date')
 			->orderBy('id')
 			->get()
