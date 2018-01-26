@@ -43,6 +43,7 @@ class MatchController extends Controller
 				$query->leftJoin('votes', 'votes.comic_id', 'comics.id')
 					->selectRaw('
 						comics.*,
+						COUNT(votes.quality) AS votes,
 						SUM(votes.quality) AS quality,
 						SUM(votes.creativity) AS creativity,
 						SUM(votes.entertainment) AS entertainment
@@ -72,6 +73,7 @@ class MatchController extends Controller
 				$query->leftJoin('votes', 'votes.comic_id', 'comics.id')
 					->selectRaw('
 						comics.*,
+						COUNT(votes.quality) AS votes,
 						SUM(votes.quality) AS quality,
 						SUM(votes.creativity) AS creativity,
 						SUM(votes.entertainment) AS entertainment
@@ -99,6 +101,7 @@ class MatchController extends Controller
 				$query->leftJoin('votes', 'votes.comic_id', 'comics.id')
 					->selectRaw('
 						comics.*,
+						COUNT(votes.quality) AS votes,
 						SUM(votes.quality) AS quality,
 						SUM(votes.creativity) AS creativity,
 						SUM(votes.entertainment) AS entertainment
