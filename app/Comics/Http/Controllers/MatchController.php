@@ -14,15 +14,38 @@ class MatchController extends Controller
 
 	public function get(Request $request, $id)
 	{
+		$voter_id = $request->input('voter_id');
 		$with = array_merge(
 			$request->input('with') ?? [],
 			[
 				'comics.pages.managedFile',
 				'comics.pages.thumbnail.managedFile',
+				'comics.characters.icon',
+				'comics.users',
 			]
 		);
 
-		return response(Match::with($with)->findOrFail($id));
+		return response(
+			Match::with($with)
+				->withCount(['votes' => function($query) use ($voter_id) {
+					$query->where('user_id', $voter_id);
+				}])
+				->with(['comics' => function($query) {
+					$query->leftJoin('votes', 'votes.comic_id', 'comics.id')
+						->selectRaw('
+							comics.*,
+							COUNT(votes.quality) AS votes,
+							SUM(votes.quality) AS quality,
+							SUM(votes.creativity) AS creativity,
+							SUM(votes.entertainment) AS entertainment
+						')
+						->whereNull('votes.deleted_at')
+						->where('votes.warning_issued', 0)
+						->groupBy('comics.id')
+					;
+				}])
+				->findOrFail($id)
+		);
 	}
 
 	public function home(Request $request)
