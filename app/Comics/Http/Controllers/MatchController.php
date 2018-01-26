@@ -110,7 +110,6 @@ class MatchController extends Controller
 			->whereHas('status', function ($query) {
 				$query->where('name', 'Complete');
 			})
-			->whereRaw('due_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)')
 			->orderBy('due_date', 'desc')
 			->orderBy('id', 'desc')
 			->take(10)
