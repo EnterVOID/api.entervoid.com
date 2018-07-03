@@ -81,6 +81,8 @@ class User extends Model implements
         'password',
     ];
 
+    protected $appends = ['name'];
+
 	public function achievements()
 	{
 		return $this->hasMany(Achievement::class);
@@ -114,5 +116,10 @@ class User extends Model implements
     public function hitlist()
 	{
 		return $this->belongsToMany(Character::class, 'hitlist');
+	}
+
+	public function getNameAttribute()
+	{
+		return $this->real_name ?? $this->login;
 	}
 }

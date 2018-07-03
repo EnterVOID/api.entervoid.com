@@ -16,6 +16,7 @@ class CreateComicsTables extends Migration
 		Schema::create('comics', function (Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedInteger('match_id')->index();
+			$table->unsignedInteger('side')->index();
 			$table->string('title');
 			$table->string('legacy_id')->nullable();
 			$table->boolean('accepted');

@@ -8,6 +8,7 @@ use App\SluggableModel;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * App\Match
@@ -59,6 +60,10 @@ class Match extends SluggableModel
         'comics',
     ];
 
+    protected $appends = [
+    	'auto_title',
+	];
+
     public function getSluggableAttribute()
     {
         return $this->title ?? $this->getKey();
@@ -80,6 +85,11 @@ class Match extends SluggableModel
         return $this->belongsTo('App\Comics\MatchStatus');
     }
 
+	public function characters()
+	{
+		return $this->hasManyThrough(Character::class, Comic::class);
+	}
+
     /**
      * The comics attached to this match.
      */
@@ -93,8 +103,32 @@ class Match extends SluggableModel
 		return $this->morphOne(PlaylistItem::class, 'playlisted');
 	}
 
+	public function users()
+	{
+		return $this->hasManyThrough(User::class, Comic::class);
+	}
+
     public function votes()
     {
         return $this->hasManyThrough(Vote::class, Comic::class);
     }
+
+    public function getAutoTitleAttribute()
+	{
+		$titleArray = [];
+		foreach ($this->comics as $comic) {
+			$titleArray[$comic->id] = $comic->characters->pluck('name')->isEmpty()
+				? $comic->users->pluck('name')->isEmpty()
+					? collect('???')
+					: $comic->users->pluck('name')->all()
+				: $comic->characters->pluck('name')->all();
+		}
+		return implode(' vs. ', map($titleArray, function($names) {
+			$names = collect($names);
+			if (count($names) > 1) {
+				$names->push('and ' . $names->pop());
+			}
+			return $names->implode(', ');
+		}));
+	}
 }

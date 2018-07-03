@@ -148,4 +148,16 @@ class MatchController extends Controller
 			'Complete' => $complete,
 		]);
 	}
+
+	public function home(Request $request, $id)
+	{
+		return response(
+			Match::with([
+				'comics.pages.managedFile',
+				'comics.pages.thumbnail.managedFile',
+			])
+			->groupBy(['status'])
+			->findOrFail($id)
+		);
+	}
 }
